@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Trust Architecture v1.0 - Nick Ramos</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body class="docs-page">
+
+<!-- Navigation - Documentation Post Specific -->
+<nav id="navbar" class="docs-post-navbar">
+    <div class="container">
+        <a href="/index.html" class="home-btn">Home</a>
+
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<section class="docs-section">
+
+    <div class="container">
+
+        <!-- Cover Image -->
+        <img id="post-cover"
+             src=""
+             alt=""
+             style="width: 100%; height: auto; max-height: 520px; object-fit: cover; border-radius: 16px; margin-bottom: 50px; border: 1px solid #222;">
+
+        <h1 class="section-title" style="text-align: left; font-size: 3.2rem; margin-bottom: 16px;">
+            <!-- Title populated by JS -->
+        </h1>
+
+        <!-- Tags -->
+        <div id="post-tags" style="margin-bottom: 40px; display: flex; gap: 12px; flex-wrap: wrap;"></div>
+
+        <!-- Back to Library Link -->
+        <div style="margin-bottom: 40px;">
+            <a href="/docs.html" class="back-to-library" style="font-size: 1.1rem; font-weight: 500;">
+                ← Back to Library
+            </a>
+        </div>
+
+        <!-- TLDR -->
+        <div class="tldr-container" id="tldr-container">
+            <h2>TLDR</h2>
+            <div class="tldr-content" id="tldr-content">
+                <p>
+                    Designed and implemented a segmented Zero Trust-inspired network architecture for a self-hosted media server environment.
+                    Configured strict micro-segmentation across 6 VLANs, deployed reverse proxy with WAF, Cloudflare Tunnel for secure remote access, and compensating controls (WireGuard VPN, MAC port security, BPDU Guard).
+                    Reduced attack surface by enforcing least-privilege firewall rules and isolating high-risk devices.
+                    Demonstrates practical application of network security principles, firewall management, and secure remote access.
+                </p>
+            </div>
+            <button id="tldr-toggle" class="tldr-toggle-btn">Read full TLDR ↓</button>
+        </div>
+
+        <!-- Introduction -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Introduction</h2>
+        <p style="color: #ddd; line-height: 1.7;">
+            Now that my media server is live and functional, I can only think of how to improve it.
+            My first thought is, "What if I want to access this while traveling?" or "What if I want to share this with my dad, but he lives across the country?"
+        </p>
+        <br>
+        <p style="color: #ddd; line-height: 1.7;">
+            I realized that if I wanted to expose applications to internet, I needed a more advanced network setup than what Google Fiber provides their customers.
+            So for this project, I'm taking my first step towards implementing a Zero Trust Network Architecture.
+        </p>
+
+        <h3 style="color: #00ffff; margin: 40px 0 16px;">Project Goals</h3>
+        <ul style="line-height: 1.8; color: #ddd;">
+            <li>Segment devices based on risk profile</li>
+            <li>Configure secure remote access for applications</li>
+            <li>Implement strict firewall rules</li>
+            <li>Improve layer 2 security</li>
+            <li>Harden the overall system</li>
+        </ul>
+
+        <!-- Architecture Overview -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Architecture Overview</h2>
+        <p style="color: #ddd; line-height: 1.7;">
+            While designing the network, my main goals were <strong>scalability</strong> and <strong>strong security through risk-based segmentation</strong>.
+        </p>
+
+        <table style="width: 100%; border-collapse: collapse; margin: 30px 0; color: #ddd;">
+            <thead>
+            <tr style="background: #1a1a1a;">
+                <th style="padding: 14px; text-align: left; border-bottom: 1px solid #333;">Network</th>
+                <th style="padding: 14px; text-align: left; border-bottom: 1px solid #333;">Purpose</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="border-bottom: 1px solid #222;"><td style="padding: 14px;">Management</td><td style="padding: 14px;">Network infrastructure, controllers, and management interfaces</td></tr>
+            <tr style="border-bottom: 1px solid #222;"><td style="padding: 14px;">Applications</td><td style="padding: 14px;">Self-hosted services (media, automation, productivity, etc.)</td></tr>
+            <tr style="border-bottom: 1px solid #222;"><td style="padding: 14px;">DMZ</td><td style="padding: 14px;">Public-facing services accessed through reverse proxy</td></tr>
+            <tr style="border-bottom: 1px solid #222;"><td style="padding: 14px;">Workstations</td><td style="padding: 14px;">User devices (laptops, tablets, etc.) that regularly leave the network</td></tr>
+            <tr style="border-bottom: 1px solid #222;"><td style="padding: 14px;">IoT</td><td style="padding: 14px;">Low-trust devices (smart home, printers, TVs, etc.)</td></tr>
+            <tr style="border-bottom: 1px solid #222;"><td style="padding: 14px;">Guest</td><td style="padding: 14px;">Untrusted devices (phones, tablets, visitor laptops)</td></tr>
+            </tbody>
+        </table>
+        <br>
+        <h3>Additional Context</h3>
+        <br>
+        <p><strong style="color: #00ffff;">Guest VLAN:</strong> Designed for untrusted visitors and temporary devices. Since people remain one of the weakest links in security (phishing, public Wi-Fi usage, Bluetooth/AirDrop exposure, etc.), this segment is heavily isolated with strict outbound firewall rules.</p>
+        <br>
+        <p><strong style="color: #00ffff;">IoT VLAN:</strong> Dedicated to low-trust smart home devices, printers, and TVs. IoT devices are notoriously insecure and frequent targets of supply chain attacks. I observed multiple devices attempting unauthorized outbound connections (often to random cloud endpoints), which are now blocked by default at the firewall.</p>
+        <br>
+        <p><strong style="color: #00ffff;">DMZ (Screened Subnet):</strong> Houses all public-facing services and the reverse proxy. This creates a controlled buffer zone between the internet and the internal network, ensuring that even if a publicly accessible service is compromised, attackers cannot easily pivot inward.</p>
+        <br>
+        <p><strong style="color: #00ffff;">Workstations VLAN:</strong> For user devices such as laptops, desktops, and tablets that regularly leave the network and return. These are treated as “dirty” due to potential exposure to external threats.</p>
+        <br>
+        <p><strong style="color: #00ffff;">Applications VLAN:</strong> Contains core self-hosted services (media server, automation tools, etc.) — protected from higher-risk segments.</p>
+        <br>
+        <p><strong style="color: #00ffff;">Management VLAN:</strong> Reserved exclusively for infrastructure devices (router, switch, WAP, servers). This critical segment is the most tightly controlled.</p>
+        <br>
+        <p>This segmentation strategy follows Zero Trust principles of “never trust, always verify” and least privilege. By assuming devices — especially wireless ones — may already be compromised, I intentionally keep high-risk assets away from sensitive internal resources. While this initial design has room for refinement, it significantly limits lateral movement.</p>
+
+        <!-- Screened Subnet (DMZ) -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Screened Subnet (DMZ)</h2>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            A major driver for this project was enabling secure remote access to my self-hosted media library. Whether traveling or sharing content with family across the country, I needed a way to expose services externally without compromising the internal network.
+        </p><br>
+        <p style="color: #ddd; line-height: 1.7;">
+            This requirement pushed me fully into Zero Trust thinking: assume breach, never trust, and verify explicitly. With a path now open to the internet, I could no longer rely on HTTP logins or broad exposure.
+        </p><br>
+        <p style="color: #ddd; line-height: 1.7;">
+            To secure the DMZ, I implemented the following layered controls:
+        </p><br>
+
+        <ul style="line-height: 1.8; color: #ddd; padding-left: 20px;">
+            <li><h3><strong>Cloudflare Tunnel + Web Application Firewall (WAF)</strong></h3>
+                <ul style="padding-left: 24px; margin-top: 8px;">
+                    <li>Established an outbound-only encrypted tunnel from within the Docker network directly to Cloudflare.</li>
+                    <li>Enabled WAF rules to block risky ASNs, common exploit paths, automated scanners, and malicious traffic patterns.</li>
+                    <li><strong>Result:</strong> ~99% of inbound noise is blocked at the edge. I review logs weekly to refine rules.</li>
+                </ul>
+            </li><br>
+
+            <li><h3><strong>Zoraxy Reverse Proxy</strong></h3>
+                <ul style="padding-left: 24px; margin-top: 8px;">
+                    <li>Deployed Zoraxy as the central reverse proxy in the DMZ.</li>
+                    <li>Automatically provisioned TLS certificates for each application hostname.</li>
+                    <li>Configured internal DNS overrides so all traffic to these hostnames is forced through Zoraxy over HTTPS.</li>
+                </ul>
+            </li>
+        </ul>
+        <br>
+        <p>These are quite basic, so I'll be implementing Anti-Malware, IDS/IPS, and a basic SIEM. (Possibly even NetFlow? We'll see.)</p>
+        <br>
+
+        <!-- Core Components -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Core Components</h2>
+
+        <div class="core-components-grid">
+            <!-- Image first (will show first on mobile) -->
+            <div class="core-image">
+                <img src="/assets/post-images/zero-trust-network/physical_stack.jpeg"
+                     alt="Physical Stack"
+                     style="width:100%; border-radius: 12px; border: 1px solid #222;">
+            </div>
+
+            <!-- Text second -->
+            <div class="core-text">
+                <p style="color: #ddd; line-height: 1.7; margin-bottom: 24px;">
+                    My ISP (Google Fiber) has great speeds,
+                    but the default gateway they provide is extremely limited in terms of configuration access -
+                    so I decided to implement fresh hardware.
+                </p>
+
+                <ul style="line-height: 1.8; color: #ddd;">
+                    <li><h3><strong>Router</strong></h3>
+                        Used Lenovo M720s running OPNsense. Intel i5-8400 @ 2.80GHz (6 Cores), 1TB HDD, 256GB SSD Boot Drive, 8GB Memory.
+                        Yes the specs are overkill - I’ll likely move this to a mini PC in the future, but I need to see how consumption changes when enabling additional services.</li>
+                    <li><h3><strong>Switch</strong></h3>
+                        I went with the Lite 8 PoE Managed Switch straight off the UniFi website.
+                        It comes with 8 ports, 4 of those ports supporting up to POE+ (802.3at). Perfect for what I need.</li>
+                    <li><h3><strong>Wireless Access Point</strong></h3>
+                        Picked up a UniFi 6 Lite Wi-Fi 6 Access Point. Came with Dual-Band MIMO - it supports 2.5Ghz & 5GHz.
+                        In my next project, we’ll make the jump to 6GHz WAP.</li>
+                    <li><h3><strong>Cat6a Custom Cabling</strong></h3>
+                        I figured it wouldn’t be a bad idea to learn how to correctly terminate cables.
+                        So I ordered a cheap network repair kit off of Amazon, and paired it with 500ft of Cat6a STP.
+                        STP is probably overkill, but why not?</li>
+                </ul>
+                <br>
+                <p>I will say, Google Fiber makes it really easy when it comes to using your own hardware. 
+                You can easily set your provider gateway to "Bridged Mode" which essentially turns it into a dumb repeater. </p>
+            </div>
+        </div>
+
+        <!-- Layer 2 -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Layer 2 Security Controls</h2>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            UniFi devices can be controlled from a self-hosted application called UniFi Controller.
+        </p>
+
+        <div class="layer2-grid">
+            <!-- Text -->
+            <div class="layer2-text">
+                <h3 style="margin: 40px 0 20px;">Key Configurations</h3>
+
+                <p><strong style="color: #00ffff;">Disabled Unused Ports:</strong> Unused ports are open season for any attacker who gains physical access to my system. I disabled the ports and turned off POE to conserve power.</p>
+                <br>
+
+                <p><strong style="color: #00ffff;">Restricted Access Ports by MAC Address:</strong> For fixed ports that should never have more than a single device, I restricted access to that specific MAC address.</p>
+                <br>
+
+                <p><strong style="color: #00ffff;">Enabled BPDU Guard for all Access Ports:</strong> This is just a common sense configuration. Although I’ve already restricted ports by MAC address, I want to eliminate the risk of access ports being used as unauthorized trunk ports.</p>
+                <br>
+
+                <p><strong style="color: #00ffff;">Strong Wi-Fi Passphrases:</strong> All wireless networks use 35+ character passphrases generated with high complexity and stored in Bitwarden.</p>
+                <br>
+
+                <p><strong style="color: #00ffff;">Enabled WPA2 for IoT Network, and WPA2/WPA3 for Guest Network:</strong> Most IoT devices will have issues with WPA3, so I set the IoT network to WPA2 to prevent issues (for now), and the Guest Network is configured for WPA2/WPA3 which would mean if the device is WPA3 capable - that’s what it’ll use.</p>
+                <br>
+
+                <p><strong style="color: #00ffff;">Moved Devices to Management VLAN:</strong> Both the switch and WAP were moved to a more secure subnet, putting the sub-interface (and firewall) in between attackers and potential SSH access to infrastructure devices.</p>
+                <br>
+
+                <p><strong style="color: #ddd;">Note:</strong> I only have a single switch, so spanning tree protocol is not needed.</p>
+            </div>
+
+            <!-- Image -->
+            <div class="layer2-image">
+                <img src="/assets/post-images/zero-trust-network/unifi_dash.jpg"
+                     alt="UniFi Dashboard"
+                     style="width: 100%; border-radius: 12px; border: 1px solid #222;">
+            </div>
+        </div>
+
+        <!-- Layer 3 -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Layer 3 Security Controls</h2>
+
+        <div class="layer3-grid">
+            <!-- Text -->
+            <div class="layer3-text">
+                <p style="color: #ddd; line-height: 1.7; margin-bottom: 24px;">
+                    OPNsense is the nexus of my current Layer 3 security.
+                </p>
+
+                <p><strong style="color: #00ffff;">Subnet Sizing:</strong> After implementing my VLANs (primarily Layer 2), I decided to limit subnet sizes to the minimum required for functionality. Less available IP addresses the better. I’ll edit sizes if need be, but there’s no benefit in having 254 slots when I only need 6 for the foreseeable future.</p>
+                <br>
+
+                <p><strong style="color: #00ffff;">Strict Firewall Rules:</strong> Since we segmented the network, our firewall has a much more active role in our network security. I implemented strict firewall rules PER device, very few broad rules. Nearly all of them require a specific destination address AND destination port for you to traverse. This would likely be impractical in an enterprise environment, but since this is just my local network - I can adjust on the fly quite easily.</p>
+                <br>
+
+                <p><strong style="color: #00ffff;">Centralized NTP &amp; DNS:</strong> I forced all of my VLANs to forward network time requests to OPNsense trusted internal NTP server. I also forced all DNS requests to forward upstream. Reduces attack surface on each device (no direct DNS cache poisoning, amplification, or C2 channels from network hosts).</p>
+                <br>
+
+                <p><strong style="color: #00ffff;">WireGuard Server:</strong> All IoT devices are in a dedicated high risk VLAN, but devices like such only use WPA2 - so I decided to at least pair it with a VPN (common compensating control). If an attacker does break WPA2 encryption, then they’ll have to break the VPN before they can see anything of use in traffic - plus they’re trapped inside the IoT network.</p>
+            </div>
+
+            <!-- Image -->
+            <div class="layer3-image">
+                <img src="/assets/post-images/zero-trust-network/opn_dash.jpg"
+                     alt="OPNsense Firewall Rules"
+                     style="width: 100%; border-radius: 12px; border: 1px solid #222;">
+            </div>
+        </div>
+
+        <!-- Additional Hardening -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Additional Hardening</h2>
+        <ul style="line-height: 1.8; color: #ddd;">
+            <li>Disabled SSH root login on all systems and enforced key-based authentication with strong passphrases</li>
+            <li>Configured high-entropy, unique passwords for every service and device (managed via Bitwarden)</li>
+            <li>Enabled automatic security updates and unattended-upgrades on Ubuntu hosts</li>
+            <li>Set strict file permissions and disabled unnecessary services/daemons across servers</li>
+            <li>Physically secured the rack/stack in a locked room with limited access</li>
+        </ul>
+
+        <!-- Challenges -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Challenges & Lessons Learned</h2>
+        <ul style="line-height: 1.8; color: #ddd;">
+            <li><strong>Firewall Rule Lockouts:</strong> Strict per-device rules frequently locked me out of my own systems.</li>
+            <li><strong>NFS Race Conditions Across VLANs:</strong> Moving services between segmented networks introduced mount failures.</li>
+            <li><strong>Native VLAN Confusion:</strong> Misunderstanding the default/native VLAN behavior on the UniFi switch.</li>
+            <li><strong>Performance vs. Security Balancing:</strong> Overly aggressive rules occasionally impacted service responsiveness.</li>
+        </ul>
+
+        <!-- Conclusion -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Conclusion</h2>
+        <p style="color: #ddd; line-height: 1.7;">
+            This project marks a significant milestone in my cybersecurity journey. Just a few months ago, I was still getting comfortable with the Ubuntu CLI. Today, I am confidently designing and hardening a segmented Zero Trust-inspired network architecture.
+        </p>
+        <p style="color: #ddd; line-height: 1.7;">
+            Building a resilient Zero Trust environment is a continuous process. My next priorities include implementing 802.1X/RADIUS authentication, deploying a SIEM solution, and achieving full-stack HTTPS encryption across the network.
+        </p>
+
+    </div>
+</section>
+
+<script src="/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Nick Ramos</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body class="docs-page">
+
+<!-- Navigation -->
+<nav id="navbar">
+    <div class="container">
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#hero">About</a></li>
+            <li><a href="docs.html">Documentation</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<section class="docs-section">
+    <div class="container">
+        <h1 class="section-title">Documentation</h1>
+        <p class="section-subtitle">Technical projects, labs, and articles</p>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label><input type="checkbox" value="project" class="filter-checkbox" checked> Technical Projects</label>
+                <label><input type="checkbox" value="lab" class="filter-checkbox" checked> Security Labs</label>
+                <label><input type="checkbox" value="blog" class="filter-checkbox" checked> Articles / Blog</label>
+            </div>
+
+            <button id="sort-btn" class="btn">Sort: Newest First</button>
+        </div>
+
+        <!-- Posts Grid -->
+        <div class="projects-grid" id="docs-grid"></div>
+    </div>
+</section>
+
+<script src="/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxmox Server v1.0 - Nick Ramos</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body class="docs-page">
+
+<!-- Navigation -->
+<nav id="navbar">
+    <div class="container">
+        <ul class="nav-links">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/docs.html">Documentation</a></li>
+            <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<section class="docs-section">
+    <div class="container">
+
+        <h1 class="section-title" style="text-align: left; font-size: 3.2rem; margin-bottom: 16px;">
+            Proxmox Server v1.0
+        </h1>
+
+        <p style="color: #00ffff; font-size: 1.1rem; margin-bottom: 40px;">
+            Self-hosted infrastructure build • $200 eBay build
+        </p>
+
+        <div style="max-width: 900px; margin-bottom: 60px;">
+            <blockquote style="border-left: 4px solid #00ffff; padding-left: 24px; color: #aaa; font-style: italic;">
+                I wanted to stop paying for services I could run myself.<br>
+                What started as a simple media server turned into a deep dive into self-hosted infrastructure.
+            </blockquote>
+        </div>
+
+        <!-- TLDR -->
+        <h2 style="font-size: 1.8rem; margin: 50px 0 20px;">TLDR</h2>
+        <p style="color: #ddd; line-height: 1.7; font-size: 1.08rem;">
+            Built a multi-service homelab on a $200 Lenovo M720s running Proxmox.
+            Hosts Jellyfin, media automation, Nginx reverse proxy, Cloudflare Zero Trust tunnels,
+            and a self-hosted AI stack (Ollama/N8N) across 6 isolated VMs/containers.
+        </p>
+
+        <!-- Hardware & OS -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Hardware & Operating Systems</h2>
+
+        <h3 style="color: #00ffff; margin: 40px 0 16px;">Hardware</h3>
+        <p><strong>Chassis:</strong> Lenovo ThinkCentre M720s Small Form Factor (SFF)</p>
+        <p><strong>CPU:</strong> Intel i5-8400 (6 cores, QuickSync transcoding)</p>
+        <p><strong>RAM:</strong> 24GB DDR4 (mixed sticks)</p>
+        <p><strong>Boot Storage:</strong> 512GB NVMe SSD + heatsink</p>
+        <p><strong>Media Storage:</strong> 8TB Seagate IronWolf HDD</p>
+        <p><strong>Backup:</strong> 8TB External HDD</p>
+
+        <!-- Image placeholders - replace paths later -->
+        <div style="margin: 40px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            <img src="" alt="Internal Snapshot" style="width:100%; border-radius: 12px; border: 1px solid #222;">
+            <img src="" alt="External Snapshot" style="width:100%; border-radius: 12px; border: 1px solid #222;">
+        </div>
+
+        <h3 style="color: #00ffff; margin: 50px 0 16px;">Operating Systems</h3>
+        <ul style="line-height: 1.8; color: #ddd;">
+            <li><strong>Proxmox VE</strong> — Bare-metal hypervisor</li>
+            <li><strong>Ubuntu</strong> — LXC containers</li>
+            <li><strong>Ubuntu Server</strong> — Virtual Machines</li>
+            <li><strong>Docker</strong> — Container orchestration inside VMs</li>
+        </ul>
+
+        <!-- Functionality -->
+        <h2 style="font-size: 1.8rem; margin: 70px 0 30px;">Functionality</h2>
+
+        <table style="width: 100%; border-collapse: collapse; margin: 30px 0; color: #ddd;">
+            <thead>
+            <tr style="background: #1a1a1a;">
+                <th style="padding: 14px; text-align: left; border-bottom: 1px solid #333;">ID</th>
+                <th style="padding: 14px; text-align: left; border-bottom: 1px solid #333;">Type</th>
+                <th style="padding: 14px; text-align: left; border-bottom: 1px solid #333;">OS</th>
+                <th style="padding: 14px; text-align: left; border-bottom: 1px solid #333;">Application(s)</th>
+                <th style="padding: 14px; text-align: left; border-bottom: 1px solid #333;">Purpose</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="border-bottom: 1px solid #222;">
+                <td style="padding: 14px;">100 'media'</td>
+                <td style="padding: 14px;">LXC</td>
+                <td style="padding: 14px;">Ubuntu</td>
+                <td style="padding: 14px;">n/a</td>
+                <td style="padding: 14px;">Dedicated media storage</td>
+            </tr>
+            <!-- Add remaining rows as needed -->
+            </tbody>
+        </table>
+
+        <h3 style="color: #00ffff; margin: 50px 0 20px;">Other Notable Services</h3>
+        <ul style="line-height: 1.8; color: #ddd;">
+            <li>Samba File Share</li>
+            <li>SSH with key auth + passphrase (root disabled)</li>
+            <li>Cloudflare Zero Trust Tunnels</li>
+        </ul>
+
+        <!-- Future Plans -->
+        <h2 style="font-size: 1.8rem; margin: 70px 0 30px;">Future Plans</h2>
+        <ul style="line-height: 1.8; color: #ddd;">
+            <li>Container consolidation</li>
+            <li>Dedicated AI node with GPU</li>
+            <li>Network segmentation + DMZ</li>
+            <li>Improved NAS storage</li>
+            <li>WireGuard remote access</li>
+        </ul>
+
+    </div>
+</section>
+
+<script src="/script.js"></script>
+</body>
+</html>
