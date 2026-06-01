@@ -1,4 +1,4 @@
-﻿// ==================== CENTRAL DATA SOURCE ====================
+﻿// ==================== CENTRAL DATA SOURCE
 const documentationPosts = [
     {
         title: "Designing a Risk-Based Zero Trust Architecture for Homelab",
@@ -20,7 +20,7 @@ const documentationPosts = [
     }
 ];
 
-// ==================== PROJECTS SECTION (Homepage) ====================
+// ==================== PROJECTS SECTION (Homepage)
 function renderProjects() {
     const grid = document.getElementById('projects-grid');
     if (!grid) return;
@@ -47,7 +47,7 @@ function renderProjects() {
     });
 }
 
-// ==================== DOCUMENTATION GRID (docs.html) ====================
+// ==================== DOCUMENTATION GRID
 function renderDocsGrid(filteredPosts) {
     const grid = document.getElementById('docs-grid');
     if (!grid) return;
@@ -109,7 +109,7 @@ function initDocsFilters() {
     filterAndRender();
 }
 
-// ==================== SKILLS ====================
+// ==================== SKILLS
 const skills = [
     { name: "Proxmox", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/proxmox/proxmox-original-wordmark.svg" },
     { name: "Docker", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
@@ -192,7 +192,7 @@ function createSkillOrb(skill) {
     return orb;
 }
 
-// ==================== CERTIFICATIONS ====================
+// ==================== CERTIFICATIONS
 const certifications = [
     {
         title: "CompTIA Network+",
@@ -228,26 +228,36 @@ function renderCertifications() {
     });
 }
 
-// ==================== SINGLE DOC POST ====================
+// ==================== SINGLE DOC POST
 function populatePostFromData() {
     const currentPath = window.location.pathname;
-    const post = documentationPosts.find(p => p.link.includes(currentPath.split('/').pop()));
+    const fileName = currentPath.split('/').pop();
+
+    const post = documentationPosts.find(p => p.link.includes(fileName));
 
     if (!post) return;
 
+    // Update page title in <head>
+    document.title = `${post.title} - Nick Ramos`;
+
+    // Update visible h1
     const postTitle = document.querySelector('h1.section-title');
     if (postTitle) postTitle.textContent = post.title;
 
+    // Update cover image
     const coverImg = document.getElementById('post-cover');
     if (coverImg) coverImg.src = post.image;
 
+    // Update tags
     const tagsContainer = document.getElementById('post-tags');
     if (tagsContainer) {
-        tagsContainer.innerHTML = post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('');
+        tagsContainer.innerHTML = post.tags.map(tag =>
+            `<span class="post-tag">${tag}</span>`
+        ).join('');
     }
 }
 
-// ==================== HAMBURGER MENU ====================
+// ==================== HAMBURGER MENU
 function initHamburger() {
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
@@ -269,7 +279,25 @@ function initHamburger() {
     });
 }
 
-// ==================== INITIALIZATION ====================
+// ==================== TLDR TOGGLE
+function initTldrToggle() {
+    const toggleBtn = document.getElementById('tldr-toggle');
+    const content = document.getElementById('tldr-content');
+
+    if (!toggleBtn || !content) return;
+
+    toggleBtn.addEventListener('click', () => {
+        content.classList.toggle('expanded');
+
+        if (content.classList.contains('expanded')) {
+            toggleBtn.textContent = 'Less ↑';
+        } else {
+            toggleBtn.textContent = 'More ↓';
+        }
+    });
+}
+
+// ==================== INITIALIZATION 
 document.addEventListener('DOMContentLoaded', () => {
     renderProjects();
     renderSkills();
@@ -281,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (document.body.classList.contains('docs-page')) {
         populatePostFromData();
+        initTldrToggle();
     }
 
     initHamburger();

@@ -651,20 +651,13 @@ button, a.btn {
 }
 
 
-/* ==================== DOCS POST NAVBAR ==================== */
-.docs-post-navbar {
-    background-color: rgba(10, 10, 10, 0.98);
-    backdrop-filter: blur(12px);
+/* ==================== DOCS POST NAVBAR ==================== *//* ==================== DOCS PAGE SPECIFIC ==================== */
+/* Active link highlighting on Documentation pages */
+.docs-page #navbar .nav-links a[href*="docs.html"] {
+    color: #00ffff;
 }
 
-.docs-post-navbar .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 22px 20px;
-    max-width: 1480px;
-}
-
+/* Post tags styling (keep this - it's used in the article) */
 .post-tag {
     background-color: #1a1a1a;
     color: #00ffff;
@@ -693,24 +686,6 @@ button, a.btn {
 .back-to-library:hover {
     color: #ffffff;
     text-shadow: 0 0 10px #00ffff;
-}
-
-.home-btn {
-    color: #ddd;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-    padding: 8px 20px;
-    border: 1px solid #333;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.home-btn:hover {
-    border-color: #00ffff;
-    color: #ffffff;
-    background-color: rgba(0, 255, 255, 0.05);
 }
 
 /* ==================== TLDR CONTAINER ==================== */

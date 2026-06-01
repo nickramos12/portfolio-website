@@ -14,3 +14,7 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 /.idea/
+
+
+# Template Files
+template_post.html
