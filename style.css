@@ -871,3 +871,290 @@ button, a.btn {
     color: #ffffff;
     text-shadow: 0 0 10px #00ffff;
 }
+
+
+.hero-tag {
+    display: inline-block;
+    background-color: #1a1a1a;
+    color: #00ffff;
+    padding: 8px 22px;
+    border-radius: 50px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: 1px solid #00ffff33;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+}
+
+/* ================ TIMELINE ================ */
+.timeline {
+    position: relative;
+    max-width: 960px;
+    margin: 60px auto 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 118px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, #00ffff, #00aaff);
+    border-radius: 2px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 90px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Dot overlaid ON the line */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    left: 118px;
+    top: 28px;
+    width: 18px;
+    height: 18px;
+    background: #0a0a0a;
+    border: 4px solid #00ffff;
+    border-radius: 50%;
+    z-index: 3;
+}
+
+/* Content card */
+.timeline-content {
+    margin-left: 150px;
+    background-color: #111;
+    border-radius: 16px;
+    padding: 36px;
+    border: 1px solid #222;
+    flex: 1;
+    min-width: 0;
+    position: relative;
+}
+
+.timeline-content:hover {
+    border-color: #00ffff;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 255, 255, 0.1);
+}
+
+/* Date inside card */
+.timeline-date {
+    font-size: 1.05rem;
+    color: #00ffff;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+/* Tags - fixed */
+.timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.tag {
+    background-color: #1a1a1a;
+    color: #0ff;
+    padding: 7px 18px;
+    border-radius: 30px;
+    font-size: 0.87rem;
+    border: 1px solid #333;
+}
+
+/* Rest */
+.timeline-header h3 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+}
+
+.company {
+    color: #aaa;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Add this to the bottom of style.css */
+
+/* ================ TIMELINE MOBILE OPTIMIZATION ================ */
+@media (max-width: 768px) {
+    .timeline {
+        max-width: 100%;
+        padding: 0 16px;
+    }
+
+    .timeline::before {
+        left: 28px;           /* Move line closer to left edge */
+        width: 4px;
+    }
+
+    .timeline-item {
+        margin-bottom: 70px;
+    }
+
+    .timeline-item::after {
+        left: 28px;           /* Dot follows line */
+        top: 22px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .timeline-content {
+        margin-left: 68px;    /* Reduced left margin */
+        padding: 24px;
+    }
+
+    .timeline-date {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+
+    .timeline-header h3 {
+        font-size: 1.35rem;
+        line-height: 1.25;
+    }
+
+    .experience-list li {
+        padding-left: 20px;
+        font-size: 0.97rem;
+    }
+}
+
+/* Add this to the bottom of style.css (after existing responsive rules) */
+
+@media (max-width: 768px) {
+    #hero {
+        padding: 110px 0 80px;     /* More top padding under navbar */
+        min-height: auto;          /* Allow natural height on very small screens */
+    }
+
+    .hero-grid {
+        padding: 0;                /* Remove conflicting padding */
+        gap: 32px;
+    }
+
+    .hero-text {
+        text-align: center;        /* Better centered on mobile */
+    }
+
+    .hero-title {
+        font-size: 3.2rem;         /* Slightly smaller for tighter mobile screens */
+        margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        margin-bottom: 32px;
+    }
+
+    .hero-buttons {
+        justify-content: center;   /* Center buttons */
+        gap: 18px;
+    }
+
+    .main-cta {
+        padding: 15px 32px;
+        font-size: 1.05rem;
+    }
+
+    .icon-btn {
+        width: 48px;
+        height: 48px;
+    }
+
+    .btn-icon {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* ================ SKILLS MOBILE OPTIMIZATION ================ */
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: repeat(3, 1fr);   /* 3 columns on mobile */
+        gap: 18px;                               /* tighter spacing */
+        padding: 10px 0;
+    }
+
+    .skill-orb {
+        width: 100%;
+        height: 138px;
+        padding: 12px;
+    }
+
+    .skill-icon {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 10px;
+    }
+
+    .skill-name {
+        font-size: 0.9rem;
+    }
+}
+
+/* ================ SKILLS SHOW MORE ANIMATION ================ */
+.skill-orb {
+    opacity: 0;
+    transform: translateY(20px) scale(0.92);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skill-orb.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Stagger animation */
+.skills-grid .skill-orb:nth-child(1) { transition-delay: 0.05s; }
+.skills-grid .skill-orb:nth-child(2) { transition-delay: 0.1s; }
+.skills-grid .skill-orb:nth-child(3) { transition-delay: 0.15s; }
+.skills-grid .skill-orb:nth-child(4) { transition-delay: 0.2s; }
+.skills-grid .skill-orb:nth-child(5) { transition-delay: 0.25s; }
+.skills-grid .skill-orb:nth-child(6) { transition-delay: 0.3s; }
+.skills-grid .skill-orb:nth-child(7) { transition-delay: 0.35s; }
+.skills-grid .skill-orb:nth-child(8) { transition-delay: 0.4s; }
+.skills-grid .skill-orb:nth-child(9) { transition-delay: 0.45s; }
+.skills-grid .skill-orb:nth-child(10){ transition-delay: 0.5s; }
+.skills-grid .skill-orb:nth-child(11){ transition-delay: 0.55s; }
+
+
+/* ================ HAMBURGER X ANIMATION ================ */
+.hamburger span {
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* ================ MOBILE HAMBURGER MENU ================ */
+@media (max-width: 768px) {
+    .nav-links li {
+        display: none;   /* Hide all by default on mobile */
+    }
+
+    /* Show ALL links in hamburger menu */
+    .nav-links li {
+        display: block;
+    }
+}

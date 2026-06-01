@@ -1,30 +1,33 @@
-﻿// ==================== PROJECTS (Homepage) ====================
-const projects = [
+﻿// ==================== CENTRAL DATA SOURCE ====================
+const documentationPosts = [
     {
-        title: "Zero Trust Architecture",
-        description: "Designed and implemented a segmented Zero Trust network architecture using OPNsense, UniFi, and Cloudflare Tunnel. Features VLAN micro-segmentation across 6 zones, strict firewall rules, and secure remote access.",
-        image: "/assets/web-images/zero-trust-network.jpg",
-        tags: ["Zero Trust", "Network Security", "VLAN Segmentation", "OPNsense", "Cybersecurity"],
+        title: "Designing a Risk-Based Zero Trust Architecture for Homelab",
+        description: "Designed and implemented a segmented Zero Trust network architecture using OPNsense, UniFi, and Cloudflare Tunnel.",
+        image: "/assets/post-images/zero-trust-network/cover-photo.jpg",
+        tags: ["Zero Trust", "Network Security", "OPNsense", "Cybersecurity"],
         date: "2025-04-15",
+        type: "project",
         link: "/documentation/zero-trust-network.html"
     },
     {
-        title: "Proxmox Self-Hosted Infrastructure",
-        description: "Built a complete self-hosted homelab on Proxmox with Jellyfin, media automation, Nginx reverse proxy, and AI stack (Ollama + N8N). Running on a single node with Docker containers and Zero Trust access controls.",
-        image: "/assets/web-images/proxmox-selfhosted-infra.jpg",
-        tags: ["Proxmox", "Homelab", "Self-Hosted", "Virtualization", "Docker"],
+        title: "Building a Private Cloud Homelab on Proxmox",
+        description: "Built a complete self-hosted homelab on Proxmox with Jellyfin, media automation, Nginx reverse proxy, and AI stack.",
+        image: "/assets/post-images/proxmox-cluster/cover-photo.jpg",
+        tags: ["Proxmox", "Homelab", "Ubuntu", "Docker"],
         date: "2025-02-10",
+        type: "project",
         link: "/documentation/proxmox-infrastructure.html"
     }
 ];
 
+// ==================== PROJECTS SECTION (Homepage) ====================
 function renderProjects() {
     const grid = document.getElementById('projects-grid');
     if (!grid) return;
 
     grid.innerHTML = '';
 
-    const sortedProjects = [...projects].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedProjects = [...documentationPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
 
     sortedProjects.forEach(project => {
         const card = document.createElement('div');
@@ -44,28 +47,7 @@ function renderProjects() {
     });
 }
 
-// ==================== DOCUMENTATION POSTS ====================
-const documentationPosts = [
-    {
-        title: "Zero Trust Architecture",
-        description: "Designed and implemented a segmented Zero Trust network architecture using OPNsense, UniFi, and Cloudflare Tunnel.",
-        image: "/assets/post-images/zero-trust-network/cover-photo.jpg",
-        tags: ["Zero Trust", "Network Security", "OPNsense", "Cybersecurity"],
-        date: "2025-04-15",
-        type: "project",
-        link: "/documentation/zero-trust-network.html"
-    },
-    {
-        title: "Proxmox Self-Hosted Infrastructure",
-        description: "Built a complete self-hosted homelab on Proxmox with Jellyfin, media automation, Nginx reverse proxy, and AI stack.",
-        image: "/assets/post-images/proxmox-infrastructure.jpg",
-        tags: ["Proxmox", "Homelab", "Ubuntu", "Docker"],
-        date: "2025-02-10",
-        type: "project",
-        link: "/documentation/proxmox-infrastructure.html"
-    }
-];
-
+// ==================== DOCUMENTATION GRID (docs.html) ====================
 function renderDocsGrid(filteredPosts) {
     const grid = document.getElementById('docs-grid');
     if (!grid) return;
@@ -91,9 +73,6 @@ function renderDocsGrid(filteredPosts) {
 }
 
 function initDocsFilters() {
-    const grid = document.getElementById('docs-grid');
-    if (!grid) return;
-
     const checkboxes = document.querySelectorAll('.filter-checkbox');
     const sortBtn = document.getElementById('sort-btn');
     let isNewestFirst = true;
@@ -109,11 +88,10 @@ function initDocsFilters() {
             filtered = filtered.filter(post => checkedTypes.includes(post.type));
         }
 
-        filtered.sort((a, b) => {
-            return isNewestFirst
-                ? new Date(b.date) - new Date(a.date)
-                : new Date(a.date) - new Date(b.date);
-        });
+        filtered.sort((a, b) => isNewestFirst
+            ? new Date(b.date) - new Date(a.date)
+            : new Date(a.date) - new Date(b.date)
+        );
 
         renderDocsGrid(filtered);
     }
@@ -149,25 +127,68 @@ const skills = [
 function renderSkills() {
     const grid = document.getElementById('skills-grid');
     if (!grid) return;
+
     grid.innerHTML = '';
 
-    skills.forEach(skill => {
-        const orb = document.createElement('div');
-        orb.className = 'skill-orb';
+    const ROWS_TO_SHOW = 2;        // ← Change back to 5 when done testing
+    const itemsPerRow = window.innerWidth <= 768 ? 3 : 5;
+    const initialLimit = ROWS_TO_SHOW * itemsPerRow;
 
-        const img = document.createElement('img');
-        img.src = skill.icon;
-        img.alt = skill.name;
-        img.className = 'skill-icon';
+    const initialSkills = skills.slice(0, initialLimit);
+    const hasMore = skills.length > initialLimit;
 
-        const nameElement = document.createElement('div');
-        nameElement.className = 'skill-name';
-        nameElement.textContent = skill.name;
-
-        orb.appendChild(img);
-        orb.appendChild(nameElement);
+    // Render initial skills (with animation)
+    initialSkills.forEach(skill => {
+        const orb = createSkillOrb(skill);
         grid.appendChild(orb);
+
+        // Trigger animation
+        setTimeout(() => orb.classList.add('visible'), 10);
     });
+
+    if (hasMore) {
+        const showMoreBtn = document.createElement('button');
+        showMoreBtn.className = 'btn main-cta';
+        showMoreBtn.style.margin = '40px auto 0';
+        showMoreBtn.style.display = 'block';
+        showMoreBtn.textContent = 'Show All Skills';
+
+        showMoreBtn.addEventListener('click', () => {
+            const remainingSkills = skills.slice(initialLimit);
+
+            remainingSkills.forEach((skill, index) => {
+                const orb = createSkillOrb(skill);
+                grid.appendChild(orb);
+
+                // Staggered animation
+                setTimeout(() => {
+                    orb.classList.add('visible');
+                }, 15 + (index * 25)); // nice staggered effect
+            });
+
+            showMoreBtn.remove();
+        });
+
+        grid.parentElement.appendChild(showMoreBtn);
+    }
+}
+
+function createSkillOrb(skill) {
+    const orb = document.createElement('div');
+    orb.className = 'skill-orb';
+
+    const img = document.createElement('img');
+    img.src = skill.icon;
+    img.alt = skill.name;
+    img.className = 'skill-icon';
+
+    const nameElement = document.createElement('div');
+    nameElement.className = 'skill-name';
+    nameElement.textContent = skill.name;
+
+    orb.appendChild(img);
+    orb.appendChild(nameElement);
+    return orb;
 }
 
 // ==================== CERTIFICATIONS ====================
@@ -206,44 +227,44 @@ function renderCertifications() {
     });
 }
 
-
 // ==================== SINGLE DOC POST ====================
 function populatePostFromData() {
     const currentPath = window.location.pathname;
-
-    const post = documentationPosts.find(p =>
-        p.link.includes(currentPath.split('/').pop())
-    );
+    const post = documentationPosts.find(p => p.link.includes(currentPath.split('/').pop()));
 
     if (!post) return;
 
-    // Set Title
     const postTitle = document.querySelector('h1.section-title');
     if (postTitle) postTitle.textContent = post.title;
 
-    // Set Cover Image
     const coverImg = document.getElementById('post-cover');
     if (coverImg) coverImg.src = post.image;
 
-    // Add Tags
     const tagsContainer = document.getElementById('post-tags');
     if (tagsContainer) {
-        tagsContainer.innerHTML = post.tags.map(tag => `
-            <span class="post-tag">${tag}</span>
-        `).join('');
+        tagsContainer.innerHTML = post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('');
     }
 }
 
-// ==================== TLDR TOGGLE ====================
-function initTldrToggle() {
-    const content = document.getElementById('tldr-content');
-    const toggleBtn = document.getElementById('tldr-toggle');
+// ==================== HAMBURGER MENU ====================
+function initHamburger() {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
 
-    if (!content || !toggleBtn) return;
+    if (!hamburger || !navLinks) return;
 
-    toggleBtn.addEventListener('click', () => {
-        const isExpanded = content.classList.toggle('expanded');
-        toggleBtn.textContent = isExpanded ? 'Show less ↑' : 'Read full TLDR ↓';
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    });
+
+    // Auto-close menu when a link is clicked
+    const navItems = navLinks.querySelectorAll('a');
+    navItems.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            hamburger.classList.remove('active');
+        });
     });
 }
 
@@ -257,17 +278,9 @@ document.addEventListener('DOMContentLoaded', () => {
         initDocsFilters();
     }
 
-    // NEW: Populate single documentation post
     if (document.body.classList.contains('docs-page')) {
         populatePostFromData();
     }
 
-    // TLDR Toggle
-    initTldrToggle();
-
-    setTimeout(() => {
-        if (typeof Iconify !== 'undefined') {
-            Iconify.scan();
-        }
-    }, 100);
+    initHamburger();
 });
