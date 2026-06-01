@@ -130,19 +130,26 @@ function renderSkills() {
 
     grid.innerHTML = '';
 
-    const ROWS_TO_SHOW = 2;        // ← Change back to 5 when done testing
-    const itemsPerRow = window.innerWidth <= 768 ? 3 : 5;
+    const ROWS_TO_SHOW = 3;
+
+    // More accurate column count based on current CSS (minmax 160px)
+    let itemsPerRow = 5; // default desktop
+    if (window.innerWidth <= 768) {
+        itemsPerRow = 3;
+    } else if (window.innerWidth >= 1800) {
+        itemsPerRow = 7;   // wider screens
+    } else if (window.innerWidth >= 1400) {
+        itemsPerRow = 6;
+    }
+
     const initialLimit = ROWS_TO_SHOW * itemsPerRow;
 
     const initialSkills = skills.slice(0, initialLimit);
     const hasMore = skills.length > initialLimit;
 
-    // Render initial skills (with animation)
     initialSkills.forEach(skill => {
         const orb = createSkillOrb(skill);
         grid.appendChild(orb);
-
-        // Trigger animation
         setTimeout(() => orb.classList.add('visible'), 10);
     });
 
@@ -151,21 +158,15 @@ function renderSkills() {
         showMoreBtn.className = 'btn main-cta';
         showMoreBtn.style.margin = '40px auto 0';
         showMoreBtn.style.display = 'block';
-        showMoreBtn.textContent = 'Show All Skills';
+        showMoreBtn.textContent = 'Show more';
 
         showMoreBtn.addEventListener('click', () => {
-            const remainingSkills = skills.slice(initialLimit);
-
-            remainingSkills.forEach((skill, index) => {
+            const remaining = skills.slice(initialLimit);
+            remaining.forEach((skill, i) => {
                 const orb = createSkillOrb(skill);
                 grid.appendChild(orb);
-
-                // Staggered animation
-                setTimeout(() => {
-                    orb.classList.add('visible');
-                }, 15 + (index * 25)); // nice staggered effect
+                setTimeout(() => orb.classList.add('visible'), 20 + i * 30);
             });
-
             showMoreBtn.remove();
         });
 
