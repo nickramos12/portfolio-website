@@ -46,7 +46,7 @@
 
         <!-- Back to Library Link -->
         <div style="margin-bottom: 40px;">
-            <a href="/docs.html" class="back-to-library" style="font-size: 1.1rem; font-weight: 500;">
+            <a href="/documentation/index.html" class="back-to-library" style="font-size: 1.1rem; font-weight: 500;">
                 ← Back to Library
             </a>
         </div>
@@ -145,7 +145,8 @@
                     <li>Enabled WAF rules to block risky ASNs, common exploit paths, automated scanners, and malicious traffic patterns.</li>
                     <li><strong>Result:</strong> ~99% of inbound noise is blocked at the edge. I review logs weekly to refine rules.</li>
                 </ul>
-            </li><br>
+            </li>
+            <br>
 
             <li><h3><strong>Zoraxy Reverse Proxy</strong></h3>
                 <ul style="padding-left: 24px; margin-top: 8px;">
@@ -156,7 +157,8 @@
             </li>
         </ul>
         <br>
-        <p>These are quite basic, so I'll be implementing Anti-Malware, IDS/IPS, and a basic SIEM. (Possibly even NetFlow? We'll see.)</p>
+        <p>This combination provides secure, authenticated remote access while maintaining a strong isolation boundary. Full end-to-end encryption and additional hardening (e.g., mTLS) are planned for the next phase.</p>
+        
         <br>
 
         <!-- Core Components -->
@@ -272,32 +274,56 @@
 
         <!-- Additional Hardening -->
         <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Additional Hardening</h2>
-        <ul style="line-height: 1.8; color: #ddd;">
-            <li>Disabled SSH root login on all systems and enforced key-based authentication with strong passphrases</li>
-            <li>Configured high-entropy, unique passwords for every service and device (managed via Bitwarden)</li>
-            <li>Enabled automatic security updates and unattended-upgrades on Ubuntu hosts</li>
-            <li>Set strict file permissions and disabled unnecessary services/daemons across servers</li>
-            <li>Physically secured the rack/stack in a locked room with limited access</li>
-        </ul>
 
-        <!-- Challenges -->
+        <p>Beyond the core Layer 2 and Layer 3 controls, I applied several additional hardening measures across the environment.</p>
+
+        <p><strong style="color: #00ffff;">SSH Hardening:</strong> Disabled SSH root login on all systems and enforced key-based authentication with strong passphrases.</p>
+        <br>
+
+        <p><strong style="color: #00ffff;">Credential Management:</strong> Configured high-entropy, unique passwords for every service and device, all managed via Bitwarden.</p>
+        <br>
+
+        <p><strong style="color: #00ffff;">Automatic Updates:</strong> Enabled automatic security updates and unattended-upgrades on all Ubuntu hosts.</p>
+        <br>
+
+        <p><strong style="color: #00ffff;">System Minimization:</strong> Set strict file permissions and disabled all unnecessary services and daemons across servers.</p>
+        <br>
+
+        <p><strong style="color: #00ffff;">Physical Security:</strong> Secured the entire rack/stack in a locked room with limited physical access.</p>
+        <br>
+
+        <p>These steps further reduced the attack surface and aligned the lab with defense-in-depth principles.</p>
+
+
+        <!-- Challenges & Lessons Learned -->
         <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Challenges & Lessons Learned</h2>
-        <ul style="line-height: 1.8; color: #ddd;">
-            <li><strong>Firewall Rule Lockouts:</strong> Strict per-device rules frequently locked me out of my own systems.</li>
-            <li><strong>NFS Race Conditions Across VLANs:</strong> Moving services between segmented networks introduced mount failures.</li>
-            <li><strong>Native VLAN Confusion:</strong> Misunderstanding the default/native VLAN behavior on the UniFi switch.</li>
-            <li><strong>Performance vs. Security Balancing:</strong> Overly aggressive rules occasionally impacted service responsiveness.</li>
-        </ul>
 
+        <p><strong style="color: #00ffff;">Firewall Rule Lockouts:</strong> Strict per-device, destination-IP-and-port rules frequently locked me out of my own systems. This taught me the critical importance of always maintaining an out-of-band management path (e.g., physical console access or a dedicated “break-glass” rule) and testing changes incrementally.</p>
+        <br>
+
+        <p><strong style="color: #00ffff;">NFS Race Conditions Across VLANs:</strong> Moving services between segmented networks introduced NFS mount failures due to timing and routing issues. I learned to carefully plan inter-VLAN dependencies and use firewall rules more surgically instead of relying on broad “allow all” shortcuts.</p>
+        <br>
+
+        <p><strong style="color: #00ffff;">Native VLAN Confusion:</strong> Misunderstanding the default/native VLAN behavior on the UniFi switch caused initial connectivity problems when moving management interfaces. This highlighted how Layer 2 fundamentals can quietly break higher-level configurations if not fully documented.</p>
+        <br>
+
+        <p><strong style="color: #00ffff;">Performance vs. Security Balancing:</strong> Overly aggressive subnet sizing and firewall rules occasionally impacted service responsiveness (especially media streaming). I now better understand the need to measure before and after changes and document acceptable performance baselines.</p>
+        <br>
+
+        <p>Overall, the biggest takeaway was that Zero Trust is easy in theory but operationally demanding in practice. Assuming breach forces you to think through every dependency, and small configuration mistakes can have outsized effects. These experiences dramatically improved my systematic troubleshooting and documentation habits.</p>
         <!-- Conclusion -->
         <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Conclusion</h2>
         <p style="color: #ddd; line-height: 1.7;">
-            This project marks a significant milestone in my cybersecurity journey. Just a few months ago, I was still getting comfortable with the Ubuntu CLI. Today, I am confidently designing and hardening a segmented Zero Trust-inspired network architecture.
+            This project marks a significant milestone in my cybersecurity journey. Just a few months ago, I was still getting comfortable with the Ubuntu CLI. Today, I am confidently designing and hardening a segmented Zero Trust-inspired network architecture, routinely evaluating complex trade-offs in subnet sizing, Layer 2 security controls, VPN compensating controls for WPA2 devices, and physical attack vectors
         </p>
+        <br>
         <p style="color: #ddd; line-height: 1.7;">
-            Building a resilient Zero Trust environment is a continuous process. My next priorities include implementing 802.1X/RADIUS authentication, deploying a SIEM solution, and achieving full-stack HTTPS encryption across the network.
+            What started as basic command-line exploration has become one of the most engaging and valuable hands-on experiences I’ve ever had. This project taught me far more than studying for the Network+ exam, giving me real comfort and confidence in building secure network topologies from the ground up.
         </p>
-
+        <br>
+        <p>Building a resilient Zero Trust environment is a continuous process. My next priorities include implementing 802.1X/RADIUS authentication, deploying a SIEM solution, and achieving full-stack HTTPS encryption across the network.</p>
+        <br>
+        <p>I’m actively learning and iterating — feedback and connections from the community are always welcome.</p>
     </div>
 </section>
 
