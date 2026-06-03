@@ -3,16 +3,23 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Nick Ramos - Network Engineering & Cybersecurity | Zero Trust, Proxmox homelab, OPNsense, self-hosted infrastructure.">
         <title>Nick Ramos - Network Engineering & Cybersecurity</title>
+    
+        <link rel="preload" href="style.css" as="style">
         <link rel="stylesheet" href="style.css">
+    
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" as="style">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+        <link rel="preload" href="script.js" as="script">
+        
         <link rel="icon" type="image/x-icon" href="favicon.ico">
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="manifest" href="site.webmanifest">
     </head>
     <body>
         <!-- Navigation -->
-        <nav id="navbar">
+        <nav id="navbar" role="navigation" aria-label="Main navigation">
             <div class="container">
                 <ul class="nav-links">
                     <li><a href="#hero">Home</a></li>
@@ -62,12 +69,9 @@
                     </div>
                 </div>
 
-                <!-- Right: Image / animation placeholder -->
-                <div class="hero-visual">
-                    <!-- We'll add cool visual here next -->
-                    <div class="visual-placeholder">
-                        <p style="color:#555; text-align:center;">[Cool animation or image goes here]</p>
-                    </div>
+                <!-- Right: Hero Visual -->
+                <div class="hero-visual" aria-hidden="true">
+                    <!-- Cool visual / animation will go here -->
                 </div>
             </div>
         </section>
@@ -91,7 +95,7 @@
                 <div class="projects-grid" id="projects-grid">
                 </div>
                 <div style="text-align: center; margin-top: 60px;">
-                    <a href="docs.html" class="btn main-cta">
+                    <a href="/documentation/index.html" class="btn main-cta">
                         Browse Full Documentation →
                     </a>
                 </div>
@@ -109,7 +113,7 @@
                     <!-- Most Recent -->
                     <div class="timeline-item">
                         <div class="timeline-content">
-                            <div class="timeline-date">2019 — 2025</div>
+                            <div class="timeline-date">2025 — Present</div>
                             <div class="timeline-header">
                                 <h3>Self-Directed Cybersecurity Student & Homelab Builder</h3>
                                 <p class="company">Independent Projects • Atlanta, GA</p>
@@ -175,7 +179,7 @@
                 <p class="section-subtitle">I help build secure, self-hosted infrastructure and Zero Trust networks. Let's talk.</p>
 
                 <div class="contact-cta">
-                    <a href="#" class="btn main-cta">Schedule a Call</a>
+                    <a href="#contact" class="btn main-cta">Schedule a Call</a>
                 </div>
             </div>
         </section>
