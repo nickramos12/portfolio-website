@@ -17,8 +17,19 @@ const documentationPosts = [
         date: "2025-02-10",
         type: "project",
         link: "/documentation/proxmox-infrastructure.html"
+    },
+    {
+        title: "Pickle Rick - Easy",
+        description: "I compromised a Rick and Morty-themed web server by enumerating directories, bypassing command restrictions, and escalating privileges via sudo to collect all three secret ingredients.",
+        image: "/assets/post-images/pickle-rick/cover-photo.jpg",
+        tags: ["TryHackMe", "Easy", "Web Exploitation", "Command Execution"],
+        date: "2025-06-05",
+        type: "lab",
+        link: "/documentation/pickle_rick.html"
     }
 ];
+
+// Type Options: "project" "lab" or "blog"
 
 // ==================== PROJECTS SECTION (Homepage)
 function renderProjects() {
