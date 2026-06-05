@@ -65,6 +65,16 @@ function renderDocsGrid(filteredPosts) {
 
     grid.innerHTML = '';
 
+    if (filteredPosts.length === 0) {
+        grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 80px 20px; color: #888;">
+                <p style="font-size: 1.3rem; margin-bottom: 12px;">No posts selected</p>
+                <p>Select at least one filter above to see documentation posts.</p>
+            </div>
+        `;
+        return;
+    }
+
     filteredPosts.forEach(post => {
         const card = document.createElement('div');
         card.className = 'project-card';
@@ -97,6 +107,8 @@ function initDocsFilters() {
 
         if (checkedTypes.length > 0) {
             filtered = filtered.filter(post => checkedTypes.includes(post.type));
+        } else {
+            filtered = [];   // Show nothing when all filters are off
         }
 
         filtered.sort((a, b) => isNewestFirst
