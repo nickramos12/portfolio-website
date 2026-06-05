@@ -264,6 +264,8 @@ button, a.btn {
     grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
     gap: 36px;
     padding: 20px 0;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 /* Only one override needed */
@@ -282,7 +284,7 @@ button, a.btn {
     border: 1px solid #222;
     height: 100%;
     display: flex;
-    flex-direction: column;        /* Back to vertical layout */
+    flex-direction: column;
 }
 
 .project-card:hover {
