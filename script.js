@@ -31,6 +31,44 @@ const documentationPosts = [
 
 // Type Options: "project" "lab" or "blog"
 
+// ==================== CENTRAL NAVBAR DATA
+const navbarLinks = [
+    { text: "Home", href: "/index.html", id: "home" },
+    { text: "Skills", href: "/index.html#skills", id: "skills" },
+    { text: "Projects", href: "/index.html#projects", id: "projects" },
+    { text: "Documentation", href: "/documentation/index.html", id: "documentation" },
+    { text: "Experience", href: "/index.html#experience", id: "experience" },
+    { text: "Certifications", href: "/index.html#certifications", id: "certifications" },
+    { text: "Contact", href: "/index.html#contact", id: "contact" }
+];
+
+// ==================== DYNAMIC NAVBAR
+function renderNavbar() {
+    const navLinksContainer = document.querySelector('.nav-links');
+    if (!navLinksContainer) return;
+
+    navLinksContainer.innerHTML = '';
+
+    const currentPath = window.location.pathname;
+
+    navbarLinks.forEach(link => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = link.href;
+        a.textContent = link.text;
+
+        // Mark active link
+        if (currentPath.includes('documentation') && link.id === 'documentation') {
+            a.classList.add('active');
+        } else if (currentPath === '/' || currentPath === '/index.html') {
+            if (link.id === 'home') a.classList.add('active');
+        }
+
+        li.appendChild(a);
+        navLinksContainer.appendChild(li);
+    });
+}
+
 // ==================== PROJECTS SECTION (Homepage)
 function renderProjects() {
     const grid = document.getElementById('projects-grid');
@@ -322,6 +360,7 @@ function initTldrToggle() {
 
 // ==================== INITIALIZATION 
 document.addEventListener('DOMContentLoaded', () => {
+    renderNavbar();
     renderProjects();
     renderSkills();
     renderCertifications();
