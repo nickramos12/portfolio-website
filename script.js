@@ -349,22 +349,53 @@ function initHamburger() {
     });
 }
 
-// ==================== TLDR TOGGLE
+// ==================== TLDR TOGGLE (Conditional + working expand)
 function initTldrToggle() {
     const toggleBtn = document.getElementById('tldr-toggle');
     const content = document.getElementById('tldr-content');
 
     if (!toggleBtn || !content) return;
 
-    toggleBtn.addEventListener('click', () => {
-        content.classList.toggle('expanded');
+    function shouldTruncate() {
+        // Force full render measurement
+        content.style.maxHeight = 'none';
+        const fullHeight = content.scrollHeight;
+        content.style.maxHeight = '130px';
+        return fullHeight > 160;   // increased threshold slightly
+    }
 
-        if (content.classList.contains('expanded')) {
-            toggleBtn.textContent = 'Less ↑';
-        } else {
+    // Run after full load for accurate heights
+    function initialize() {
+        const needsButton = shouldTruncate();
+
+        if (needsButton) {
+            toggleBtn.style.display = 'inline-block';
             toggleBtn.textContent = 'More ↓';
+            content.style.maxHeight = '130px';
+        } else {
+            toggleBtn.style.display = 'none';
+            content.style.maxHeight = 'none';
         }
+    }
+
+    // Click handler - use JS to control height (more reliable than class alone)
+    toggleBtn.addEventListener('click', () => {
+        if (content.classList.contains('expanded')) {
+            content.style.maxHeight = '130px';
+            toggleBtn.textContent = 'More ↓';
+        } else {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            toggleBtn.textContent = 'Less ↑';
+        }
+        content.classList.toggle('expanded');
     });
+
+    // Initialize when ready
+    if (document.readyState === 'complete') {
+        initialize();
+    } else {
+        window.addEventListener('load', initialize);
+    }
 }
 
 // ==================== INITIALIZATION 
