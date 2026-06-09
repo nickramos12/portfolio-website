@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Exploiting the OpenSSL Heartbleed vulnerability (CVE-2014-0160) to leak sensitive memory data including private keys and credentials.">
+    <title>HeartBleed - Easy | Nick Ramos</title>
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:title" content="HeartBleed - Easy | Nick Ramos">
+    <meta property="og:description" content="Exploiting the OpenSSL Heartbleed vulnerability (CVE-2014-0160) to leak sensitive memory data including private keys and credentials.">
+    <meta property="og:image" content="https://nick-ramos.com/assets/post-images/heartbleed/cover-photo.jpg">
+    <meta property="og:url" content="https://nick-ramos.com/documentation/heartbleed.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nick Ramos">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HeartBleed - Easy | Nick Ramos">
+    <meta name="twitter:description" content="Exploiting the OpenSSL Heartbleed vulnerability (CVE-2014-0160) to leak sensitive memory data including private keys and credentials.">
+    <meta name="twitter:image" content="https://nick-ramos.com/assets/post-images/heartbleed/cover-photo.jpg">
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body class="docs-page">
+
+<nav id="navbar">
+    <div class="container">
+        <ul class="nav-links"></ul>
+
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<section class="docs-section">
+    <div class="container">
+
+        <!-- Cover Image -->
+        <img id="post-cover"
+             src="/assets/post-images/heartbleed/cover-photo.jpg"
+             alt="Cover Photo"
+             style="width: 100%; height: auto; max-height: 520px; object-fit: cover; border-radius: 16px; margin-bottom: 50px; border: 1px solid #222;">
+
+        <h1 class="section-title" style="text-align: left; margin-bottom: 16px;">
+            HeartBleed - TryHackMe
+        </h1>
+
+        <!-- Tags -->
+        <div id="post-tags" style="margin-bottom: 40px; display: flex; gap: 12px; flex-wrap: wrap;">
+            <!-- Add <span class="post-tag">Tag Name</span> as needed -->
+        </div>
+
+        <!-- Back to Library -->
+        <div style="margin-bottom: 40px;">
+            <a href="/documentation/index.html" class="back-to-library">← Back to Library</a>
+        </div>
+
+        <!-- TLDR -->
+        <div class="tldr-container" id="tldr-container">
+            <h2>TLDR</h2>
+            <div class="tldr-content" id="tldr-content">
+                <p>Performed nmap reconnaissance to identify an nginx HTTPS service on port 443. Confirmed the Heartbleed vulnerability with the ssl-heartbleed NSE script, then used a public Python exploit to dump server memory and extract private keys plus credentials.</p>
+            </div>
+            <button id="tldr-toggle" class="tldr-toggle-btn">More ↓</button>
+        </div>
+
+        <!-- Challenge Description -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Challenge Description</h2>
+        <p style="color: #ddd; line-height: 1.7;">
+            This beginner-friendly TryHackMe room focuses on one of the most famous vulnerabilities in internet history — Heartbleed (CVE-2014-0160). 
+            The goal is to exploit a vulnerable HTTPS service running a flawed version of OpenSSL to leak sensitive data from the server’s memory, including private keys and credentials.
+        </p>
+
+
+
+
+
+        <!-- ===================== RECONNAISSANCE ===================== -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Reconnaissance</h2>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Before I even attempted the challenge, I had no idea what *HeartBleed* was.
+            I decided to do some light research to familiarize myself with the vulnerability. 
+            <br><br>
+            > <a href="http://heartbleed.com">HeartBleed Official Site</a>
+            <br>
+            > <a href="https://www.seancassidy.me/diagnosis-of-the-openssl-heartbleed-bug.html">Sean Cassidy: Diagnosis of the OpenSSL Heartbleed Bug</a>
+            <br><br>
+            In essence, Heartbleed is a critical memory disclosure vulnerability in the Heartbeat extension (RFC 6520) of OpenSSL versions 1.0.1 to 1.0.1f. 
+            It stemmed from a missing bounds check when processing heartbeat requests — the server blindly trusted the <strong>length</strong> value supplied by the client instead of using the actual size of the data received. 
+            This allowed attackers to request up to 64KB of the server’s memory per request, leaking sensitive data such as private keys and credentials. 
+        </p>
+        <br>
+        
+
+        <p style="color: #ddd; line-height: 1.7;">
+            I started by checking for an active web server and found one running on tcp/443:
+        </p>
+
+        <div style="margin: 50px 0;">
+            <div id="cast1" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
+            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
+                <code>nmap -sV -sC -p 443 10.67.75.61</code>
+            </p>
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Then I confirmed the web server was running a vulnerable version:
+        </p>
+        
+        <div style="margin: 50px 0;">
+            <div id="cast2" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
+            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
+                <code>nmap -p 443 --script ssl-heartbleed 10.67.75.61</code>
+            </p>
+        </div>
+        
+
+
+        <!-------------------------------------------------------------- EXPLOITATION -->
+        <p style="color: #ddd; line-height: 1.7;">
+            During recon, I came across a GitHub repo documenting the HeartBleed exploit.
+        </p>
+
+        <div style="margin: 40px 0;">
+            <img src="/assets/post-images/heartbleed/github-repo.jpg" alt="HeartBleed Exploit GitHub Repo" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            The repo was plug-and-play, so I cloned the repo temporarily to my ~/Downloads folder and ran the script on my target.
+        </p>
+
+        <div style="margin: 50px 0;">
+            <div id="cast3" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
+            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
+                <code>python2 heartbleed-exploit.py 10.67.75.61</code>
+            </p>
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Exploit worked perfectly. I opened out.txt (the output file containing leaked data), and found my completion flag alongside user credentials.
+        </p>
+
+        <div style="margin: 40px 0;">
+            <img src="/assets/post-images/heartbleed/flag_found.jpg" alt="Flag Located" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
+        </div>
+
+
+        <!-------------------------------------------------------------- Key Takeaways -->
+
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Key Takeaways</h2>
+        <br>
+        <p><strong style="color: #00ffff;">Vulnerability-Specific Scanning</strong> Always search for targeted NSE scripts like <code>nmap --script ssl-heartbleed</code> during reconnaissance — version detection alone is often not enough.</p>
+        <br>
+        <p><strong style="color: #00ffff;">Understand the Vulnerability</strong> Heartbleed is a unique memory disclosure bug caused by a missing bounds check in OpenSSL’s Heartbeat extension. Without prior research, I would have gone in blindly trying various tactics.</p>
+        <br>
+        <p><strong style="color: #00ffff;">Public Exploits Work</strong> Reliable, ready-made exploit scripts (like the Python Heartbleed PoC) can be extremely effective. I should continue to accrue useful (and secure) exploits that can give me a unique edge.</p>
+        <br>
+        <p><strong style="color: #00ffff;">Memory Leaks Are Dangerous</strong> Prior to this, I was quite unaware of how memory leaks could impact confidentiality in a given system. 
+        Watching how easy it was for me to extract data underscored the importance of using secure versions and potentially implementing controls like encryption or secure enclaves to protect working memory. </p>
+        <br>
+        
+    </div>
+</section>
+
+<script src="/script.js"></script>
+
+<!-------------------------------------------------- Asciinema Player Template Code -->
+<script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.css">
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // Blocks for loading Asciinema recordings
+        AsciinemaPlayer.create('/assets/post-images/heartbleed/check4webserver.cast',
+            document.getElementById('cast1'), {
+                cols: 120,
+                rows: 30,
+                theme: 'monokai',
+                controls: true,
+                autoPlay: true,
+                loop: true,
+                speed: 3,
+                preload: true
+            });
+        AsciinemaPlayer.create('/assets/post-images/heartbleed/confirm_hb_vuln.cast',
+            document.getElementById('cast2'), {
+                cols: 120,
+                rows: 30,
+                theme: 'monokai',
+                controls: true,
+                autoPlay: true,
+                loop: true,
+                speed: 3,
+                preload: true
+            });
+        AsciinemaPlayer.create('/assets/post-images/heartbleed/dlandrunhb.cast',
+            document.getElementById('cast3'), {
+                cols: 120,
+                rows: 30,
+                theme: 'monokai',
+                controls: true,
+                autoPlay: true,
+                loop: true,
+                speed: 3,
+                preload: true
+            });
+
+    });
+</script>
+</body>
+</html>
