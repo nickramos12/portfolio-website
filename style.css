@@ -630,7 +630,39 @@ footer {
     padding: 0 48px;
 }
 
+/* ==================== CODE BLOCKS & INLINE CODE ==================== */
+code, pre {
+    font-family: 'Space Grotesk', ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', 'Roboto Mono', monospace;
+    background-color: #1a1a1a;
+    color: #00ff9d;                    /* Bright terminal green */
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    border: 1px solid #333;
+}
 
+pre {
+    padding: 20px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    border-radius: 12px;
+    border: 1px solid #444;
+    margin: 30px 0;
+    background-color: #111;
+}
+
+pre code {
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+
+/* Hover effect */
+code:hover, pre:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(0, 255, 170, 0.2);
+}
 
 
 /* ==================== TLDR CONTAINER ==================== */
