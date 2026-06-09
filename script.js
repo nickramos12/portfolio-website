@@ -26,6 +26,15 @@ const documentationPosts = [
         date: "2025-06-05",
         type: "lab",
         link: "/documentation/pickle_rick.html"
+    },
+    {
+        title: "HeartBleed - Easy",
+        description: "Exploited the infamous OpenSSL Heartbleed vulnerability (CVE-2014-0160) on a vulnerable HTTPS service to leak sensitive memory contents, successfully extracting private keys and credentials.",
+        image: "/assets/post-images/heartbleed/cover-photo.jpg",
+        tags: ["TryHackMe", "Easy", "Web Exploitation", "Cryptography", "Heartbleed"],
+        date: "2026-06-08",
+        type: "lab",
+        link: "/documentation/heartbleed.html"
     }
 ];
 
