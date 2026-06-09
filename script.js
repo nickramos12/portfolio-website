@@ -268,15 +268,22 @@ const certifications = [
         title: "CompTIA Network+",
         issuer: "CompTIA",
         date: "2026",
-        icon: "https://www.svgrepo.com/show/532872/network-wired.svg",
+        icon: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/comptia.svg",
         link: "https://www.credly.com/badges/4aa00f9f-2abc-41b7-bcdd-2e82d3a3cc84/public_url"
     },
     {
         title: "CompTIA Security+",
         issuer: "CompTIA",
         date: "2026 (Pending)",
-        icon: "https://www.svgrepo.com/show/398289/shield.svg",
+        icon: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/comptia.svg",
         link: "#"
+    },
+    {
+        title: "Pre Security",
+        issuer: "TryHackMe",
+        date: "2026",
+        icon: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tryhackme.svg",
+        link: "https://tryhackme.com/certificate/THM-VSHL5ZVMR3"
     }
 ];
 
@@ -292,7 +299,7 @@ function renderCertifications() {
             <img src="${cert.icon}" alt="${cert.title}" class="cert-icon">
             <h3>${cert.title}</h3>
             <p>${cert.issuer} • ${cert.date}</p>
-            ${cert.link && cert.link !== "#" ? `<a href="${cert.link}" class="cert-link" target="_blank">Verify with Credly →</a>` : ''}
+            ${cert.link && cert.link !== "#" ? `<a href="${cert.link}" class="cert-link" target="_blank">Verify →</a>` : ''}
         `;
         grid.appendChild(card);
     });
