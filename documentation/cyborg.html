@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A box involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.">
+    <title>Cyborg - Medium | Nick Ramos</title>
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:title" content="Cyborg - Medium | Nick Ramos">
+    <meta property="og:description" content="A box involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.">
+    <meta property="og:image" content="https://nick-ramos.com/assets/post-images/cyborg/cover-photo.jpg">
+    <meta property="og:url" content="https://nick-ramos.com/documentation/cyborg.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nick Ramos">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cyborg - Medium | Nick Ramos">
+    <meta name="twitter:description" content="A box involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.">
+    <meta name="twitter:image" content="https://nick-ramos.com/assets/post-images/cyborg/cover-photo.jpg">
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body class="docs-page">
+
+<nav id="navbar">
+    <div class="container">
+        <ul class="nav-links"></ul>
+
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<section class="docs-section">
+    <div class="container">
+
+        <!-- Cover Image -->
+        <img id="post-cover"
+             src="/assets/post-images/cyborg/cover-photo.jpg"
+             alt="Cover Photo"
+             style="width: 100%; height: auto; max-height: 520px; object-fit: cover; border-radius: 16px; margin-bottom: 50px; border: 1px solid #222;">
+
+        <h1 class="section-title" style="text-align: left; margin-bottom: 16px;">
+            Cyborg - TryHackMe
+        </h1>
+
+        <!-- Tags -->
+        <div id="post-tags" style="margin-bottom: 40px; display: flex; gap: 12px; flex-wrap: wrap;">
+            <!-- Populated by script.js -->
+        </div>
+
+        <!-- Back to Library -->
+        <div style="margin-bottom: 40px;">
+            <a href="/documentation/index.html" class="back-to-library">← Back to Library</a>
+        </div>
+
+        <!-- TLDR -->
+        <div class="tldr-container" id="tldr-container">
+            <h2>TLDR</h2>
+            <div class="tldr-content" id="tldr-content">
+                <p>Performed nmap reconnaissance on the target, enumerated directories with Gobuster, cracked an MD5 hash with Hashcat to find the password, extracted a BorgBackup archive to retrieve SSH credentials, logged in as user Alex, and escalated to root via a vulnerable sudo shell script that executed commands as root.</p>
+            </div>
+            <button id="tldr-toggle" class="tldr-toggle-btn">More ↓</button>
+        </div>
+
+        <!-- Challenge Description -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Challenge Description</h2>
+        <p style="color: #ddd; line-height: 1.7;">
+            Easy TryHackMe box involving encrypted archives (BorgBackup), source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.
+        </p>
+
+
+
+
+        <!-- ===================== RECONNAISSANCE ===================== -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Reconnaissance</h2>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            I started with a full port scan to identify running services, and then ran the detected versions through searchsploit for any vulnerabilities.
+        </p>
+
+        <div style="margin: 50px 0;">
+            <div id="cast1" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
+            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
+                <code>nmap -sV -F 10.66.178.64</code> - <code>searchsploit apache 2.4.18</code> - <code>searchsploit httpd 2.4</code> - <code>searchsploit openssh 7.2p2</code>
+            </p>
+        </div>
+        <p style="color: #ddd; line-height: 1.7;">
+            I didn't find anything of immediate use, but I did come across a root privilege escalation exploit for Apache 2.4 (<a href="https://nvd.nist.gov/vuln/detail/cve-2019-0211">CVE-2019-0211</a>) I found a working PoC and kept it on hand for later use.
+            <br><br>
+            <a href="https://github.com/cfreal/exploits">Click Here</a> to view the exploit I found on Github.
+            <br><br>
+        </p>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Since NMAP brought back an Apache web server, I attempted to pull it up in-browser.
+            It loads in as "Apache2 Ubuntu Default Page" and the page's source code also provided no useful clues.
+        </p>
+        <div style="margin: 40px 0;">
+            <img src="/assets/post-images/cyborg/apache2_default_page.jpg" alt="Apache Default Page" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
+        </div>
+        
+        
+
+        <!-- ===================== ENUMERATION ===================== -->
+        <p style="color: #ddd; line-height: 1.7;">
+            From there, I decided to check for hidden directories with Gobuster. It came back with two directories and one webpage: /assets, /etc, and /index.html
+        </p>
+
+        <div style="margin: 40px 0;">
+            <div id="cast2" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
+            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
+                <code>gobuster dir -u http://10.66.178.64 -w ~/Web-Content/common.txt -x php,html,js,txt,bak,old</code>
+            </p>
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Navigating to /admin, I'm brought to what seems to be a musician's online portfolio. 
+        </p>
+        
+        <div style="margin: 40px 0;">
+            <img src="/assets/post-images/cyborg/gobuster_admin.jpg" alt="Musician Portfolio Dashboard" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            I dug through the website and found two clues: an admin chatlog and a compression file 'archive.tar'
+        </p>
+        
+        <div style="margin: 40px 0;">
+            <img src="/assets/post-images/cyborg/admin_chat_log.jpg" alt="Admin Chat Log Clue" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Alex admits his security controls are weak and doesn't know how to implement them correctly. He also hints at a backup called 'music_archive'
+        </p>
+        
+        <div style="margin: 40px 0;">
+            <img src="/assets/post-images/cyborg/readme_borg.jpg" alt="BorgBackup Repo" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Inside 'archive.tar' - I found a README file that describes the compression file as a BorgBackup Repo, with a link to the documentation. 
+        </p>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Navigating to /etc, I'm brought to a web directory that holds two files: passwd & squid.conf
+        </p>
+
+        <div style="margin: 40px 0;">
+            <img src="/assets/post-images/cyborg/passwd.jpg" alt="Password File" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
+        </div>
+
+        <div style="margin: 40px 0;">
+            <img src="/assets/post-images/cyborg/squidconf.jpg" alt="Configuration File" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            From the jump, the scrambled text resembled a hash digest (I came to this conclusion since some of the files in the BorgRepo indicating encryption) - so I pulled up Hashcat to experiment.
+        </p>
+        <br><br>
+        <p style="color: #ddd; line-height: 1.7;">
+            First, I ran <code>--identify</code> to figure out the hashing algorithm, then I ran decryption with <code>rockyou.txt</code> and our digest came back as <strong>squidward</strong>.
+        </p>
+
+        <div style="margin: 40px 0;">
+            <div id="cast3" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
+            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
+                <code>hashcat --identify hash.txt</code> - <code>hashcat -m 1600 -a 0 hash.txt ~/wordlists/rockyou.txt</code>
+            </p>
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            I would have to assume this is our BorgBackup repo passphrase. So I decided to read up on how to use BorgBackup.
+            <br><br>
+            I found two critical commands: <code>borg list</code> and <code>borg extract</code> -- so I tried them out.
+        </p>
+
+        <div style="margin: 40px 0;">
+            <div id="cast4" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
+            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
+                <!-- optional text -->
+            </p>
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            After I extracted the backup repo, I ran <code>find -name *.txt</code> to quickly locate any txt files, and found Alex's password.
+        </p>
+        
+
+        <!-- ===================== EXPLOITATION ===================== -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Exploitation &amp; Privilege Escalation</h2>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Now that we have Alex's password, I connect via secure shell.
+            <br><br>
+            I immediately found the user flag when checking the current directory: <code>user.txt</code>
+        </p>
+
+        <div style="margin: 40px 0;">
+            <div id="cast5" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
+            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
+                <!-- optional text -->
+            </p>
+        </div>
+
+        <p style="color: #ddd; line-height: 1.7;">
+            Ran <code>sudo -l</code> and discovered a custom script with a clear vulnerability. 
+            The script executed arbitrary commands passed via <code>-c</code> flag as root. 
+            I exploited the script to find the root flag.
+        </p>
+
+        <!-- ===================== KEY TAKEAWAYS ===================== -->
+        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Key Takeaways</h2>
+        <br>
+        <p><strong style="color: #00ffff;">Thorough Enumeration Wins</strong> Directory brute-forcing and manual browsing revealed critical files (archive + hash) that led to initial access.</p>
+        <br>
+        <p><strong style="color: #00ffff;">Hash Cracking Fundamentals</strong> Identifying hash type with hashcat and using quality wordlists is extremely effective against weak passwords.</p>
+        <br>
+        <p><strong style="color: #00ffff;">Backup Analysis</strong> Always inspect backup files/archives — they often contain sensitive data or credentials.</p>
+        <br>
+        <p><strong style="color: #00ffff;">Sudo Script Dangers</strong> Custom sudo scripts that execute user input without proper sanitization are a massive privilege escalation vector. Always review what you can run with sudo.</p>
+        <br>
+
+    </div>
+</section>
+
+<script src="/script.js"></script>
+
+<!-- Asciinema Player -->
+<script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.css">
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // Replace these with your actual .cast file paths
+        AsciinemaPlayer.create('/assets/post-images/cyborg/port_scan.cast',
+            document.getElementById('cast1'), {
+                cols: 120,
+                rows: 30,
+                theme: 'monokai',
+                controls: true,
+                autoPlay: true,
+                loop: true,
+                speed: 3,
+                preload: true
+            });
+        AsciinemaPlayer.create('/assets/post-images/cyborg/web_enum1.cast',
+            document.getElementById('cast2'), {
+                cols: 120,
+                rows: 30,
+                theme: 'monokai',
+                controls: true,
+                autoPlay: true,
+                loop: true,
+                speed: 3,
+                preload: true
+            });
+        AsciinemaPlayer.create('/assets/post-images/cyborg/running_hashcat.cast',
+            document.getElementById('cast3'), {
+                cols: 120,
+                rows: 30,
+                theme: 'monokai',
+                controls: true,
+                autoPlay: true,
+                loop: true,
+                speed: 3,
+                preload: true
+            });
+        AsciinemaPlayer.create('/assets/post-images/cyborg/borgbackup.cast',
+            document.getElementById('cast4'), {
+                cols: 120,
+                rows: 30,
+                theme: 'monokai',
+                controls: true,
+                autoPlay: true,
+                loop: true,
+                speed: 3,
+                preload: true
+            });
+        AsciinemaPlayer.create('/assets/post-images/cyborg/foothold.cast',
+            document.getElementById('cast5'), {
+                cols: 120,
+                rows: 30,
+                theme: 'monokai',
+                controls: true,
+                autoPlay: true,
+                loop: true,
+                speed: 3,
+                preload: true
+            });
+
+    });
+</script>
+</body>
+</html>

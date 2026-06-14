@@ -19,7 +19,7 @@ const documentationPosts = [
         link: "/documentation/proxmox-infrastructure.html"
     },
     {
-        title: "Pickle Rick - Easy",
+        title: "Pickle Rick",
         description: "I compromised a Rick and Morty-themed web server by enumerating directories, bypassing command restrictions, and escalating privileges via sudo to collect all three secret ingredients.",
         image: "/assets/post-images/pickle-rick/cover-photo.jpg",
         tags: ["TryHackMe", "Easy", "Web Exploitation", "Command Execution"],
@@ -28,13 +28,22 @@ const documentationPosts = [
         link: "/documentation/pickle_rick.html"
     },
     {
-        title: "HeartBleed - Easy",
+        title: "HeartBleed",
         description: "Exploited the infamous OpenSSL Heartbleed vulnerability (CVE-2014-0160) on a vulnerable HTTPS service to leak sensitive memory contents, successfully extracting private keys and credentials.",
         image: "/assets/post-images/heartbleed/cover-photo.jpg",
         tags: ["TryHackMe", "Easy", "Web Exploitation", "Cryptography", "Heartbleed"],
         date: "2026-06-08",
         type: "lab",
         link: "/documentation/heartbleed.html"
+    },
+    {
+        title: "Cyborg",
+        description: "A box involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.",
+        image: "/assets/post-images/cyborg/cover-photo.jpg",
+        tags: ["TryHackMe", "Easy", "Linux", "Privilege Escalation", "Hash Cracking", "BorgBackup"],
+        date: "2026-06-12",
+        type: "lab",
+        link: "/documentation/cyborg.html"
     }
 ];
 
