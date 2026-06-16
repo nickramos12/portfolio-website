@@ -4,7 +4,7 @@ const documentationPosts = [
         title: "Designing a Risk-Based Zero Trust Architecture for Homelab",
         description: "Designed and implemented a segmented Zero Trust network architecture using OPNsense, UniFi, and Cloudflare Tunnel.",
         image: "/assets/post-images/zero-trust-network/cover-photo.jpg",
-        tags: ["Zero Trust", "Network Security", "OPNsense", "Cybersecurity"],
+        tags: ["zero Trust", "network security", "OPNsense", "cybersecurity", "firewall", "architecture"],
         date: "2025-04-15",
         type: "project",
         link: "/documentation/zero-trust-network.html"
@@ -13,7 +13,7 @@ const documentationPosts = [
         title: "Building a Private Cloud Homelab on Proxmox",
         description: "Built a complete self-hosted homelab on Proxmox with Jellyfin, media automation, Nginx reverse proxy, and AI stack.",
         image: "/assets/post-images/proxmox-cluster/cover-photo.jpg",
-        tags: ["Proxmox", "Homelab", "Ubuntu", "Docker"],
+        tags: ["proxmox", "docker", "linux", "media", "web-app", "self-hosting"],
         date: "2025-02-10",
         type: "project",
         link: "/documentation/proxmox-infrastructure.html"
@@ -22,7 +22,7 @@ const documentationPosts = [
         title: "Pickle Rick",
         description: "I compromised a Rick and Morty-themed web server by enumerating directories, bypassing command restrictions, and escalating privileges via sudo to collect all three secret ingredients.",
         image: "/assets/post-images/pickle-rick/cover-photo.jpg",
-        tags: ["TryHackMe", "Easy", "Web Exploitation", "Command Execution"],
+        tags: ["nmap", "gobuster"],
         date: "2025-06-05",
         type: "lab",
         link: "/documentation/pickle_rick.html"
@@ -31,7 +31,7 @@ const documentationPosts = [
         title: "HeartBleed",
         description: "Exploited the infamous OpenSSL Heartbleed vulnerability (CVE-2014-0160) on a vulnerable HTTPS service to leak sensitive memory contents, successfully extracting private keys and credentials.",
         image: "/assets/post-images/heartbleed/cover-photo.jpg",
-        tags: ["TryHackMe", "Easy", "Web Exploitation", "Cryptography", "Heartbleed"],
+        tags: ["nmap"],
         date: "2026-06-08",
         type: "lab",
         link: "/documentation/heartbleed.html"
@@ -40,10 +40,19 @@ const documentationPosts = [
         title: "Cyborg",
         description: "A box involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.",
         image: "/assets/post-images/cyborg/cover-photo.jpg",
-        tags: ["TryHackMe", "Easy", "Linux", "Privilege Escalation", "Hash Cracking", "BorgBackup"],
+        tags: ["nmap", "searchsploit", "gobuster", "hashcat", "borgbackup"],
         date: "2026-06-12",
         type: "lab",
         link: "/documentation/cyborg.html"
+    },
+    {
+        title: "Basic Pentesting",
+        description: "A challenge involving port reconnaissance, web/SMB enumeration, password cracking, and SSH privilege escalation to root.",
+        image: "/assets/post-images/basic-pentesting/cover-photo.jpg",
+        tags: ["nmap", "searchsploit", "gobuster", "hydra", "johntheripper"],
+        date: "2026-06-16",
+        type: "lab",
+        link: "/documentation/basic-pentesting.html"
     }
 ];
 
