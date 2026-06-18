@@ -38,7 +38,7 @@ const documentationPosts = [
     },
     {
         title: "Cyborg",
-        description: "A box involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.",
+        description: "A challenge involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.",
         image: "/assets/post-images/cyborg/cover-photo.jpg",
         tags: ["nmap", "searchsploit", "gobuster", "hashcat", "borgbackup"],
         date: "2026-06-12",
@@ -53,6 +53,15 @@ const documentationPosts = [
         date: "2026-06-16",
         type: "lab",
         link: "/documentation/basic-pentesting.html"
+    },
+    {
+        title: "LazyAdmin",
+        description: "A challenge involving reconnaissance, web enumeration, credential cracking, code execution, and privilege escalation to root.",
+        image: "/assets/post-images/lazyadmin/cover-photo.jpg",
+        tags: ["nmap", "searchsploit", "gobuster", "hashcat"],
+        date: "2026-06-17",
+        type: "lab",
+        link: "/documentation/lazyadmin.html"
     }
 ];
 
@@ -423,6 +432,47 @@ function initTldrToggle() {
     }
 }
 
+// ==================== CODE BLOCK
+function initCodeBlocks() {
+    document.querySelectorAll('.code-block').forEach(block => {
+        const pre = block.querySelector('pre');
+        const codeEl = block.querySelector('code');
+        const copyBtn = block.querySelector('.copy-button');
+
+        if (!pre || !codeEl || !copyBtn) return;
+
+        // Clean formatting once on load
+        let cleanText = codeEl.textContent.replace(/^\n+/, '').trimEnd();
+        codeEl.textContent = cleanText;
+
+        // Copy button
+        copyBtn.addEventListener('click', () => {
+            const textToCopy = codeEl.textContent.trim();
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const original = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                copyBtn.classList.add('copied');
+
+                setTimeout(() => {
+                    copyBtn.textContent = original;
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = textToCopy;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => copyBtn.textContent = original, 2000);
+            });
+        });
+    });
+}
+
 // ==================== INITIALIZATION 
 document.addEventListener('DOMContentLoaded', () => {
     renderNavbar();
@@ -440,4 +490,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initHamburger();
+    initCodeBlocks();
 });

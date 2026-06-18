@@ -101,7 +101,7 @@
             I started by checking for an active web server and found one running on tcp/443:
         </p>
 
-        <div style="margin: 50px 0;">
+        <div class="asciinema-embed" style="margin: 50px 0;">
             <div id="cast1" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
             <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
                 <code>nmap -sV -sC -p 443 10.67.75.61</code>
@@ -112,7 +112,7 @@
             Then I confirmed the web server was running a vulnerable version:
         </p>
         
-        <div style="margin: 50px 0;">
+        <div class="asciinema-embed" style="margin: 50px 0;">
             <div id="cast2" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
             <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
                 <code>nmap -p 443 --script ssl-heartbleed 10.67.75.61</code>
@@ -134,7 +134,7 @@
             The repo was plug-and-play, so I cloned the repo temporarily to my ~/Downloads folder and ran the script on my target.
         </p>
 
-        <div style="margin: 50px 0;">
+        <div class="asciinema-embed" style="margin: 50px 0;">
             <div id="cast3" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
             <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
                 <code>python2 heartbleed-exploit.py 10.67.75.61</code>

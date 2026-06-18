@@ -693,8 +693,9 @@ pre code {
     border: none;
 }
 
-/* Hover effect */
-code:hover, pre:hover {
+/* Hover effect — excludes big code blocks so they don't get the glowing lines */
+code:hover:not(.code-container *):not(.asciinema-embed *),
+pre:hover:not(.code-container *):not(.asciinema-embed *) {
     border-color: var(--accent);
     box-shadow: 0 0 12px rgba(0, 255, 170, 0.2);
 }
@@ -1179,5 +1180,85 @@ code:hover, pre:hover {
     .layer3-text {
         order: 1;
     }
+}
+
+/* ========== CODE BLOCK ========== */
+.code-block {
+    position: relative;
+    margin: 30px 16px;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .code-block {
+        margin: 30px auto;
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .code-block {
+        max-width: 780px;
+    }
+}
+
+.code-block pre {
+    margin: 0;
+    padding: 18px 24px;
+    padding-right: 80px;
+    background-color: #111;
+    border: 1px solid #222;
+    border-radius: 10px;
+    overflow-x: auto;
+    white-space: pre;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.code-block pre:hover {
+    box-shadow: 0 0 0 1px rgba(0, 255, 255, 0.12);
+}
+
+/* Copy button */
+.code-block .copy-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background-color: #222;
+    color: #00ffff;
+    border: 1px solid #444;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    z-index: 2;
+}
+
+.code-block .copy-button:hover {
+    background-color: #00ffff;
+    color: #0a0a0a;
+    border-color: #00ffff;
+}
+
+.code-block .copy-button.copied {
+    background-color: #00ff9d;
+    color: #0a0a0a;
+    border-color: #00ff9d;
+}
+
+/* ========== ASCIINEMA EMBEDS (zero hover effect) ========== */
+.asciinema-embed {
+    margin: 40px 0;
+}
+
+.asciinema-embed > div,
+.asciinema-player {
+    background: #0a0a0a;
+    border-radius: 12px;
+    border: 1px solid #222;
+    overflow: hidden;
 }
 

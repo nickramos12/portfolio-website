@@ -84,7 +84,7 @@
             I started with a full port scan to identify running services, and then ran the detected versions through searchsploit for any vulnerabilities.
         </p>
 
-        <div style="margin: 50px 0;">
+        <div class="asciinema-embed" style="margin: 50px 0;">
             <div id="cast1" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
             <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
                 <code>nmap -sV -F 10.66.178.64</code> - <code>searchsploit apache 2.4.18</code> - <code>searchsploit httpd 2.4</code> - <code>searchsploit openssh 7.2p2</code>
@@ -112,7 +112,7 @@
             From there, I decided to check for hidden directories with Gobuster. It came back with two directories and one webpage: /assets, /etc, and /index.html
         </p>
 
-        <div style="margin: 40px 0;">
+        <div class="asciinema-embed" style="margin: 40px 0;">
             <div id="cast2" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
             <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
                 <code>gobuster dir -u http://10.66.178.64 -w ~/Web-Content/common.txt -x php,html,js,txt,bak,old</code>
@@ -167,7 +167,7 @@
             First, I ran <code>--identify</code> to figure out the hashing algorithm, then I ran decryption with <code>rockyou.txt</code> and our digest came back as <strong>squidward</strong>.
         </p>
 
-        <div style="margin: 40px 0;">
+        <div class="asciinema-embed" style="margin: 40px 0;">
             <div id="cast3" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
             <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
                 <code>hashcat --identify hash.txt</code> - <code>hashcat -m 1600 -a 0 hash.txt ~/wordlists/rockyou.txt</code>
@@ -180,7 +180,7 @@
             I found two critical commands: <code>borg list</code> and <code>borg extract</code> -- so I tried them out.
         </p>
 
-        <div style="margin: 40px 0;">
+        <div class="asciinema-embed" style="margin: 40px 0;">
             <div id="cast4" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
             <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
                 <!-- optional text -->
@@ -201,7 +201,7 @@
             I immediately found the user flag when checking the current directory: <code>user.txt</code>
         </p>
 
-        <div style="margin: 40px 0;">
+        <div class="asciinema-embed" style="margin: 40px 0;">
             <div id="cast5" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
             <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
                 <!-- optional text -->
