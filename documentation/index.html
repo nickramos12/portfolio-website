@@ -3,51 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="author" content="Nick Ramos">
 
-    <meta property="og:title" content="Documentation - Nick Ramos">
-    <meta property="og:description" content="Technical projects, security labs, and deep-dive articles.">
-    <meta property="og:image" content="https://nick-ramos.com/assets/web-images/home-og.jpg">
-    <meta property="og:url" content="https://nick-ramos.com/documentation/index.html">
+    <!-- Open Graph + Twitter (JS will override these on article pages) -->
+    <meta property="og:title" content="Nick Ramos">
+    <meta property="og:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta property="og:image" content="https://nick-ramos.com/images/default_cover.jpg">
+    <meta property="og:url" content="https://nick-ramos.com">
     <meta property="og:type" content="website">
-    
-    <title>Documentation - Nick Ramos</title>
+    <meta property="og:site_name" content="Nick Ramos">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nick Ramos">
+    <meta name="twitter:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="twitter:image" content="https://nick-ramos.com/images/default_cover.jpg">
+
+    <title>Documentation | Nick Ramos</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="Documentation | Nick Ramos">
+    <meta property="og:description" content="Technical projects, labs, and writeups by Nick Ramos - Network Engineering & Cybersecurity">
+    <meta property="og:image" content="/images/default-cover.jpg">
+    <meta property="og:url" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nick Ramos">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Documentation | Nick Ramos">
+    <meta name="twitter:description" content="Technical projects, labs, and writeups by Nick Ramos - Network Engineering & Cybersecurity">
+    <meta name="twitter:image" content="/images/default-cover.jpg">
 </head>
-<body class="docs-page">
-
-<nav id="navbar">
+<body>
+<!-- Header Navbar -->
+<header class="site-header">
     <div class="container">
-        <ul class="nav-links"></ul>
-
-        <div class="hamburger">
-            <span></span><span></span><span></span>
-        </div>
+        <nav id="navbar">
+            <ul class="nav-links"></ul>
+        </nav>
     </div>
-</nav>
+</header>
 
-<section class="docs-section">
-    <div class="container">
+<!-- Floating Mobile Button -->
+<button id="floating-menu-btn" class="floating-btn">☰</button>
+
+
+
+<!-- Main Content -->
+<main class="main-content">
+    <section class="docs-section">
         <h1 class="section-title">Documentation</h1>
         <p class="section-subtitle">Technical projects, labs, and articles</p>
 
         <!-- Filter Bar -->
         <div class="filter-bar">
             <div class="filter-group">
-                <label><input type="checkbox" value="project" class="filter-checkbox" checked> Technical Projects</label>
-                <label><input type="checkbox" value="lab" class="filter-checkbox" checked> Security Labs</label>
-                <label><input type="checkbox" value="blog" class="filter-checkbox" checked> Articles / Blog</label>
+                <label><input type="checkbox" value="project" class="filter-checkbox" checked> Projects</label>
+                <label><input type="checkbox" value="lab" class="filter-checkbox" checked> Labs</label>
+                <label><input type="checkbox" value="blog" class="filter-checkbox" checked> Articles</label>
             </div>
-
-            <button id="sort-btn" class="btn">Sort: Newest First</button>
+            <button id="sort-btn" class="btn">Newest First ↓</button>
         </div>
 
         <!-- Posts Grid -->
         <div class="projects-grid" id="docs-grid"></div>
-    </div>
-</section>
+    </section>
+    
 
-<script src="/script.js"></script>
+
+
+</main>
+<script src="/script.js" defer></script>
 </body>
 </html>

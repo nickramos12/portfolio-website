@@ -1,361 +1,290 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Article Template</title>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A box involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.">
-    <title>LazyAdmin | Nick Ramos</title>
+    <meta name="description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="author" content="Nick Ramos">
 
-    <!-- Open Graph / Social Sharing -->
-    <meta property="og:title" content="LazyAdmin | Nick Ramos">
-    <meta property="og:description" content="A box involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.">
-    <meta property="og:image" content="https://nick-ramos.com/assets/post-images/lazyadmin/cover-photo.jpg">
-    <meta property="og:url" content="https://nick-ramos.com/documentation/lazyadmin.html">
-    <meta property="og:type" content="article">
+    <!-- Open Graph + Twitter (JS will override these on article pages) -->
+    <meta property="og:title" content="Nick Ramos">
+    <meta property="og:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta property="og:image" content="https://nick-ramos.com/images/default_cover.jpg">
+    <meta property="og:url" content="https://nick-ramos.com">
+    <meta property="og:type" content="website">
     <meta property="og:site_name" content="Nick Ramos">
 
-    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="LazyAdmin | Nick Ramos">
-    <meta name="twitter:description" content="A box involving encrypted archives, source code analysis, hash cracking, and privilege escalation via a vulnerable sudo script.">
-    <meta name="twitter:image" content="https://nick-ramos.com/assets/post-images/lazyadmin/cover-photo.jpg">
+    <meta name="twitter:title" content="Nick Ramos">
+    <meta name="twitter:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="twitter:image" content="https://nick-ramos.com/images/default_cover.jpg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+
+    <!-- asciinema stuff -->
+    <script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.css">
 
     <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
-<body class="docs-page">
-
-<nav id="navbar">
+<body>
+<!-- Header Navbar -->
+<header class="site-header">
     <div class="container">
-        <ul class="nav-links"></ul>
-
-        <div class="hamburger">
-            <span></span><span></span><span></span>
-        </div>
+        <nav id="navbar">
+            <ul class="nav-links"></ul>
+        </nav>
     </div>
-</nav>
+</header>
 
-<section class="docs-section">
-    <div class="container">
+<!-- Floating Mobile Button -->
+<button id="floating-menu-btn" class="floating-btn">☰</button>
 
-        <!-- Cover Image -->
-        <img id="post-cover"
-             src="/assets/post-images/lazyadmin/cover-photo.jpg"
-             alt="Cover Photo"
-             style="width: 100%; height: auto; max-height: 520px; object-fit: cover; border-radius: 16px; margin-bottom: 50px; border: 1px solid #222;">
 
-        <h1 class="section-title" style="text-align: left; margin-bottom: 16px;">
-            LazyAdmin
-        </h1>
+<!-- Main Content -->
+<main class="main-content">
+    <section class="blog-header">
+        <img src="/images/lazyadmin/cover-photo.jpg" alt=" Cover Photo" class="blog-cover">
 
-        <!-- Tags -->
-        <div id="post-tags" style="margin-bottom: 40px; display: flex; gap: 12px; flex-wrap: wrap;">
-            <!-- Populated by script.js -->
-        </div>
+        <div class="blog-meta">
+            <a href="/documentation" class="back-link">← Back to Library</a>
 
-        <!-- Back to Library -->
-        <div style="margin-bottom: 40px;">
-            <a href="/documentation/index.html" class="back-to-library">← Back to Library</a>
-        </div>
+            <h1 class="blog-title"></h1>
 
-        <!-- TLDR -->
-        <div class="tldr-container" id="tldr-container">
-            <h2>TLDR</h2>
-            <div class="tldr-content" id="tldr-content">
-                <p>
-                    Performed nmap recon and web enumeration with Gobuster, discovered a SweetRice CMS instance and extracted an admin hash from a SQL backup file, cracked it with Hashcat to log into the admin panel, exploited the Ads feature to inject and execute PHP code for command execution as www-data, found user.txt, and escalated to root by overwriting a script executed with sudo privileges.
-                </p>
+            <div class="blog-info"></div>
+
+            <div class="tools">
+                <!-- populated by JS -->
             </div>
-            <button id="tldr-toggle" class="tldr-toggle-btn">More ↓</button>
+
+            <div class="tldr">
+                <div class="tldr-header">
+                    <strong>TLDR:</strong>
+                    <button class="tldr-toggle">Expand</button>
+                </div>
+                <div class="tldr-content">
+                    <p></p>
+                </div>
+            </div>
         </div>
-
-        <!-- Challenge Description -->
-        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Challenge Description</h2>
-        <p style="color: #ddd; line-height: 1.7;">
-            LazyAdmin is an easy-rated Linux machine on TryHackMe featuring a web server running an older version of the SweetRice content management system, along with SSH access. 
-            The challenge requires compromising the web application to gain initial access to the system, followed by privilege escalation on the Linux host to reach root.
-        </p>
+    </section>
+    <!---------------------- start blog content --------------------------------------------->
 
 
+    <!-- ===================== RECONNAISSANCE ===================== -->
+    <h2>Reconnaissance</h2>
+    <p>As always, I started by running NMAP, followed by searchsploit for immediate version vulnerabilities.</p>
 
-
-        <!-- ===================== RECONNAISSANCE ===================== -->
-        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Reconnaissance</h2>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            As always, I started by running NMAP, followed by searchsploit for immediate version vulnerabilities. 
-        </p>
-
-        <div class="asciinema-embed" style="margin: 50px 0;">
-            <div id="cast1" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
-            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
-            </p>
-        </div>
-        <p style="color: #ddd; line-height: 1.7;">
-            I found two open ports: tcp/22 running OpenSSH 7.2p2 & tcp/80 running Apache 2.4.18.
-            Since this version of Apache wasn't up to date, I ran <code>searchsploit -w apache 2.4.18</code>, which came back with
-            an exploit involving local privilege escalation via the logrotate system. 
-            <br>
-            <br>
-            After further research, I found this exploit wouldn't serve me well in the immediate future, although a good vulnerability to fall back on.
-            The exploit involves injecting code, then waiting for logrotate to automatically run (which takes place at 6:25 AM), which should escalate the user to root. 
-            <br>
-            <br>
-            <a href="https://www.exploit-db.com/exploits/46676" target="_blank">See More (Exploit-Db.com)</a>
-            <br>
-            <br>
-        </p>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            I pulled the server up in-browser, but was met with the Default Apache Ubuntu page. Time to search for hidden directories. 
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/recon_browser.jpg" alt="Default Apache Page" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-        
-        
-        <!-- ===================== ENUMERATION ===================== -->
-        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Enumeration</h2>
-        <p style="color: #ddd; line-height: 1.7;">
-            First, I ran Gobuster against the root directory, and came back with one hit: /content
-        </p>
-
-        <div class="asciinema-embed" style="margin: 40px 0;">
-            <div id="cast2" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
-            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
-                If IP addresses change, ignore. This lab machine was having trouble staying online. I had to restart the instance several times. 
-            </p>
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            The /content page fetched an under construction template, name dropping something called 'SweetRice.'
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/gobuster_content.jpg" alt="SweetRice Under Construction" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            I did a quick google, turns out SweetRice is an open-source Content Management System (what 'CMS' stands for). 
-            The search literally told me SweetRice had significant security issues in the past, so I decided to run it through SearchSploit. 
-        </p>
-        <br>
-        <br>
-        <p style="color: #ddd; line-height: 1.7;">
-            Came back with quite a few hits, but the current running version of SweetRice is still in question so I moved to running gobuster on /content to hopefully come back with more directories.
-        </p>
-
-        <div class="asciinema-embed" style="margin: 40px 0;">
-            <div id="cast3" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
-            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
-                <!-- optional text here -->
-            </p>
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            Gobuster returned multiple hidden directories & files for <code>/content</code>. Immediately I noticed <i>changelog.txt</i> - which after a quick inspection confirmed the latest version of SweetRice was, in fact, 1.5.1. 
-            The same version that came back with multiple vulnerabilities. 
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/enum_changelog.jpg" alt="/content/changelog.txt webpage" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            I also found an admin login portal at <code>/content/as</code> - eluding that we'll need to search for credentials or brute-force them.
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/enum_login.jpg" alt="/content/as admin login portal" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            After digging through the rest of the pathways, I also found a SQL backup file - which I quickly downloaded and searched. 
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/enum_sqlbackup.jpg" alt="SQL Backup File" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            I searched the file and found a hash digest and a username <i>manager</i>, So I ran <code>hashcat --identify</code>, which brought back MD4 & MD5 as the highest likelihood. 
-            After running both algorithms against <i>rockyou.txt</i> - I cracked the password.
-        </p>
-
-        <div class="asciinema-embed" style="margin: 40px 0;">
-            <div id="cast4" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
-            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
-                Remember: <code>hashcat --identify</code> isn't a determinate answer, it's the most likely answer from top down.
-            </p>
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            With the credentials in-hand, I logged right in and was brought to a website management dashboard.
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/logged_in.jpg" alt="SweetRice Dashboard After Login" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            I cruised around the site, and did some light reading on SweetRice, but nothing stuck out to me. I revisited the SweetRice exploits from our earlier SearchSploit results, two stuck out to me. 
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/searchsploit_ss.jpg" alt="SweetRice SearchSploit Results" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            First exploit I tried was the Arbitrary File Download (<a target="_blank" href="https://www.exploit-db.com/exploits/40698">#40698</a>): The exploit is straightforward. You download the file and run it against your target.
-            <br>
-            <br>
-            I made a few quality-of-life improvements, and adjusted the target URL. 
-        </p>
-
-        <div class="asciinema-embed" style="margin: 40px 0;">
-            <div id="cast5" style="background: #0a0a0a; border-radius: 12px; border: 1px solid #222; overflow: hidden;"></div>
-            <p style="text-align: center; color: #888; margin-top: 12px; font-size: 0.95rem;">
-                Notice: I had some trouble getting the exploit to work, because I added the '!' to 'Password123' by mistake. Even in the lowest reaches of my subconscious, I know Password123 is too weak. Come on now. 
-            </p>
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            It actually worked quite well, after I fixed some of the kinks. The only problem was that it didn't give much information about the current working directory, nor could I run commands like <code>sudo -l</code> to gather information. 
-            The exploit simply downloaded target files, but I had to guess at the names and locations. Not very helpful in the current scenario.
-        </p>
-        <br>
-        <br>
-            
-
-        <!-- ===================== EXPLOITATION ===================== -->
-        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Exploitation</h2>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            I moved onto trying the Cross-Site Request Forgery / PHP Code Execution (<a target="_blank" href="https://www.exploit-db.com/exploits/40700">#40700</a>) - which is where we begin our direct exploitation of the system, gathering both flags.
-            <br>
-            <br>
-            This exploit was a bit more complex. It involved injecting PHP wrapped commands into the Ads section of the CMS dashboard, then returning to the directory <code>/content/inc/ads</code>, loading the ad file in-browser (double-click), then hard reloading the ads directory which resulted in a new Ad file containing your command response (unless the command runs silently).
-            <br>
-            <br>
-            Below is an example of me running <code>sudo -l</code> where I revealed I can execute a specific script <i>backup.pl</i> with elevated privileges.
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/example_command.jpg" alt="Example Output" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-        
-        <p style="color: #ddd; line-height: 1.7;">
-            Before moving on, it's important to note that our user.txt flag was found in the current working directory of www-data. 
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/usertxt.jpg" alt="User Flag" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            Moving on to acquiring the root flag. I reviewed <i>backup.pl</i> and found that it was simply a proxy script executing /etc/copy.sh - this file was left with open rwx permissions. 
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/replaced_etc_copysh.jpg" alt="Copysh" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-
-        <p style="color: #ddd; line-height: 1.7;">
-            It was some kind of notification script, but that mattered little to me. Since I had write permissions I simply changed it to: <br><br><code>find . root.txt && cat root.txt</code> which immediately returned my root flag. 
-        </p>
-
-        <div style="margin: 40px 0;">
-            <img src="/assets/post-images/lazyadmin/roottxt.jpg" alt="root flag" style="width: 100%; max-width: 900px; border-radius: 12px; border: 1px solid #222; display: block; margin: 0 auto;">
-        </div>
-        
-        
-
-        <!-- ===================== KEY TAKEAWAYS ===================== -->
-        <h2 style="font-size: 1.8rem; margin: 60px 0 30px;">Key Takeaways</h2>
-        <br>
-        <p><strong style="color: #00ffff;">Version Enumeration via Changelog</strong> Always check for changelog.txt, readme, or version files during directory enumeration. They often reveal the exact software version and point you toward known exploits.</p>
-        <br>
-        <p><strong style="color: #00ffff;">Database Backups Are Gold</strong> SQL backup files are frequently left exposed. Always search for .sql, .bak, and backup files — they commonly contain plaintext credentials or password hashes.</p>
-        <br>
-        <p><strong style="color: #00ffff;">CMS Feature Abuse</strong> Once inside a CMS admin panel, explore every feature (especially content/ads/uploads). Many older CMS platforms allow direct PHP code injection through seemingly innocent fields.</p>
-        <br>
-        <p><strong style="color: #00ffff;">Sudo Script Analysis</strong> When you find a script you can run with sudo, always read it. Misconfigured scripts that call other files with weak permissions are a very common privilege escalation path.</p>
-        <br>
-        <p><strong style="color: #00ffff;">File Permission Enumeration</strong> World-writable files (especially ones executed by root via sudo or cron) are high-value targets. Always check permissions with <code>ls -la</code> on anything that looks important.</p>
-        <br>
-
+    <div class="asciinema-container">
+        <div id="cast1" class="asciinema-player"></div>
+        <p class="asciinema-caption"></p>
     </div>
-</section>
 
-<script src="/script.js"></script>
+    <p>I found two open ports: tcp/22 running OpenSSH 7.2p2 &amp; tcp/80 running Apache 2.4.18. Since this version of Apache wasn't up to date, I ran <code>searchsploit -w apache 2.4.18</code>, which came back with an exploit involving local privilege escalation via the logrotate system.</p>
+    <p>After further research, I found this exploit wouldn't serve me well in the immediate future, although a good vulnerability to fall back on. The exploit involves injecting code, then waiting for logrotate to automatically run (which takes place at 6:25 AM), which should escalate the user to root.</p>
+    <p><a href="https://www.exploit-db.com/exploits/46676" target="_blank">See More (Exploit-Db.com)</a></p>
 
-<!-- Asciinema Player -->
-<script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.css">
+    <p>I pulled the server up in-browser, but was met with the Default Apache Ubuntu page. Time to search for hidden directories.</p>
 
+    <div class="image-container">
+        <img src="/images/lazyadmin/recon_browser.jpg" alt="Default Apache Page">
+        <p class="image-caption">Default Apache Page</p>
+    </div>
+
+    <!-- ===================== ENUMERATION ===================== -->
+    <h2>Enumeration</h2>
+    <p>First, I ran Gobuster against the root directory, and came back with one hit: /content</p>
+
+    <div class="asciinema-container">
+        <div id="cast2" class="asciinema-player"></div>
+        <p class="asciinema-caption">If IP addresses change, ignore. This lab machine was having trouble staying online. I had to restart the instance several times.</p>
+    </div>
+
+    <p>The /content page fetched an under construction template, name dropping something called 'SweetRice.'</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/gobuster_content.jpg" alt="SweetRice Under Construction">
+        <p class="image-caption">SweetRice Under Construction</p>
+    </div>
+
+    <p>I did a quick google, turns out SweetRice is an open-source Content Management System (what 'CMS' stands for). The search literally told me SweetRice had significant security issues in the past, so I decided to run it through SearchSploit.</p>
+    <p>Came back with quite a few hits, but the current running version of SweetRice is still in question so I moved to running gobuster on /content to hopefully come back with more directories.</p>
+
+    <div class="asciinema-container">
+        <div id="cast3" class="asciinema-player"></div>
+        <p class="asciinema-caption"></p>
+    </div>
+
+    <p>Gobuster returned multiple hidden directories &amp; files for <code>/content</code>. Immediately I noticed <i>changelog.txt</i> - which after a quick inspection confirmed the latest version of SweetRice was, in fact, 1.5.1. The same version that came back with multiple vulnerabilities.</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/enum_changelog.jpg" alt="/content/changelog.txt webpage">
+        <p class="image-caption">/content/changelog.txt webpage</p>
+    </div>
+
+    <p>I also found an admin login portal at <code>/content/as</code> - eluding that we'll need to search for credentials or brute-force them.</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/enum_login.jpg" alt="/content/as admin login portal">
+        <p class="image-caption">/content/as admin login portal</p>
+    </div>
+
+    <p>After digging through the rest of the pathways, I also found a SQL backup file - which I quickly downloaded and searched.</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/enum_sqlbackup.jpg" alt="SQL Backup File">
+        <p class="image-caption">SQL Backup File</p>
+    </div>
+
+    <p>I searched the file and found a hash digest and a username <i>manager</i>, So I ran <code>hashcat --identify</code>, which brought back MD4 &amp; MD5 as the highest likelihood. After running both algorithms against <i>rockyou.txt</i> - I cracked the password.</p>
+
+    <div class="asciinema-container">
+        <div id="cast4" class="asciinema-player"></div>
+        <p class="asciinema-caption">Remember: <code>hashcat --identify</code> isn't a determinate answer, it's the most likely answer from top down.</p>
+    </div>
+
+    <p>With the credentials in-hand, I logged right in and was brought to a website management dashboard.</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/logged_in.jpg" alt="SweetRice Dashboard After Login">
+        <p class="image-caption">SweetRice Dashboard After Login</p>
+    </div>
+
+    <p>I cruised around the site, and did some light reading on SweetRice, but nothing stuck out to me. I revisited the SweetRice exploits from our earlier SearchSploit results, two stuck out to me.</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/searchsploit_ss.jpg" alt="SweetRice SearchSploit Results">
+        <p class="image-caption">SweetRice SearchSploit Results</p>
+    </div>
+
+    <p>First exploit I tried was the Arbitrary File Download (<a target="_blank" href="https://www.exploit-db.com/exploits/40698">#40698</a>): The exploit is straightforward. You download the file and run it against your target.</p>
+    <p>I made a few quality-of-life improvements, and adjusted the target URL.</p>
+
+    <div class="asciinema-container">
+        <div id="cast5" class="asciinema-player"></div>
+        <p class="asciinema-caption">Notice: I had some trouble getting the exploit to work, because I added the '!' to 'Password123' by mistake. Even in the lowest reaches of my subconscious, I know Password123 is too weak. Come on now.</p>
+    </div>
+
+    <p>It actually worked quite well, after I fixed some of the kinks. The only problem was that it didn't give much information about the current working directory, nor could I run commands like <code>sudo -l</code> to gather information. The exploit simply downloaded target files, but I had to guess at the names and locations. Not very helpful in the current scenario.</p>
+
+    <!-- ===================== EXPLOITATION ===================== -->
+    <h2>Exploitation</h2>
+    <p>I moved onto trying the Cross-Site Request Forgery / PHP Code Execution (<a target="_blank" href="https://www.exploit-db.com/exploits/40700">#40700</a>) - which is where we begin our direct exploitation of the system, gathering both flags.</p>
+    <p>This exploit was a bit more complex. It involved injecting PHP wrapped commands into the Ads section of the CMS dashboard, then returning to the directory <code>/content/inc/ads</code>, loading the ad file in-browser (double-click), then hard reloading the ads directory which resulted in a new Ad file containing your command response (unless the command runs silently).</p>
+    <p>Below is an example of me running <code>sudo -l</code> where I revealed I can execute a specific script <i>backup.pl</i> with elevated privileges.</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/example_command.jpg" alt="Example Output">
+        <p class="image-caption">Example Output</p>
+    </div>
+
+    <p>Before moving on, it's important to note that our user.txt flag was found in the current working directory of www-data.</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/usertxt.jpg" alt="User Flag">
+        <p class="image-caption">User Flag</p>
+    </div>
+
+    <p>Moving on to acquiring the root flag. I reviewed <i>backup.pl</i> and found that it was simply a proxy script executing /etc/copy.sh - this file was left with open rwx permissions.</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/replaced_etc_copysh.jpg" alt="Copysh">
+        <p class="image-caption">Copysh</p>
+    </div>
+
+    <p>It was some kind of notification script, but that mattered little to me. Since I had write permissions I simply changed it to: <br><br><code>find . root.txt && cat root.txt</code> which immediately returned my root flag.</p>
+
+    <div class="image-container">
+        <img src="/images/lazyadmin/roottxt.jpg" alt="root flag">
+        <p class="image-caption">root flag</p>
+    </div>
+
+    <!-- ===================== KEY TAKEAWAYS ===================== -->
+    <h2>Key Takeaways</h2>
+    <p><strong>Version Enumeration via Changelog</strong><br>Always check for changelog.txt, readme, or version files during directory enumeration. They often reveal the exact software version and point you toward known exploits.</p>
+    <p><strong>Database Backups Are Gold</strong><br>SQL backup files are frequently left exposed. Always search for .sql, .bak, and backup files — they commonly contain plaintext credentials or password hashes.</p>
+    <p><strong>CMS Feature Abuse</strong><br>Once inside a CMS admin panel, explore every feature (especially content/ads/uploads). Many older CMS platforms allow direct PHP code injection through seemingly innocent fields.</p>
+    <p><strong>Sudo Script Analysis</strong><br>When you find a script you can run with sudo, always read it. Misconfigured scripts that call other files with weak permissions are a very common privilege escalation path.</p>
+    <p><strong>File Permission Enumeration</strong><br>World-writable files (especially ones executed by root via sudo or cron) are high-value targets. Always check permissions with <code>ls -la</code> on anything that looks important.</p>
+
+
+    <!---------------------- end blog content --------------------------------------------->
+
+    <!-- Recent Posts -->
+    <section class="recent-posts">
+        <h2 class="section-title">Recent Posts</h2>
+        <div class="recent-grid" id="recent-grid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+
+</main>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        AsciinemaPlayer.create('/images/lazyadmin/recon.cast', document.getElementById('cast1'), {
+            cols: 120,
+            rows: 30,
+            theme: 'monokai',
+            controls: true,
+            autoPlay: true,
+            loop: true,
+            speed: 3,
+            preload: true
+        });
 
-        // Replace these with your actual .cast file paths
-        AsciinemaPlayer.create('/assets/post-images/lazyadmin/recon.cast',
-            document.getElementById('cast1'), {
-                cols: 120,
-                rows: 30,
-                theme: 'monokai',
-                controls: true,
-                autoPlay: true,
-                loop: true,
-                speed: 3,
-                preload: true
-            });
-        AsciinemaPlayer.create('/assets/post-images/lazyadmin/enum_gobuster1.cast',
-            document.getElementById('cast2'), {
-                cols: 120,
-                rows: 30,
-                theme: 'monokai',
-                controls: true,
-                autoPlay: true,
-                loop: true,
-                speed: 3,
-                preload: true
-            });
-        AsciinemaPlayer.create('/assets/post-images/lazyadmin/enum_sweetrice.cast',
-            document.getElementById('cast3'), {
-                cols: 120,
-                rows: 30,
-                theme: 'monokai',
-                controls: true,
-                autoPlay: true,
-                loop: true,
-                speed: 3,
-                preload: true
-            });
-        AsciinemaPlayer.create('/assets/post-images/lazyadmin/enum_backup.cast',
-            document.getElementById('cast4'), {
-                cols: 120,
-                rows: 30,
-                theme: 'monokai',
-                controls: true,
-                autoPlay: true,
-                loop: true,
-                speed: 2,
-                preload: true
-            });
-        AsciinemaPlayer.create('/assets/post-images/lazyadmin/enum_exploitlocalfile.cast',
-            document.getElementById('cast5'), {
-                cols: 120,
-                rows: 30,
-                theme: 'monokai',
-                controls: true,
-                autoPlay: true,
-                loop: true,
-                speed: 3,
-                preload: true
-            });
-        
+        AsciinemaPlayer.create('/images/lazyadmin/enum_gobuster1.cast', document.getElementById('cast2'), {
+            cols: 120,
+            rows: 30,
+            theme: 'monokai',
+            controls: true,
+            autoPlay: true,
+            loop: true,
+            speed: 3,
+            preload: true
+        });
+
+        AsciinemaPlayer.create('/images/lazyadmin/enum_sweetrice.cast', document.getElementById('cast3'), {
+            cols: 120,
+            rows: 30,
+            theme: 'monokai',
+            controls: true,
+            autoPlay: true,
+            loop: true,
+            speed: 3,
+            preload: true
+        });
+
+        AsciinemaPlayer.create('/images/lazyadmin/enum_backup.cast', document.getElementById('cast4'), {
+            cols: 120,
+            rows: 30,
+            theme: 'monokai',
+            controls: true,
+            autoPlay: true,
+            loop: true,
+            speed: 2,
+            preload: true
+        });
+
+        AsciinemaPlayer.create('/images/lazyadmin/enum_exploitlocalfile.cast', document.getElementById('cast5'), {
+            cols: 120,
+            rows: 30,
+            theme: 'monokai',
+            controls: true,
+            autoPlay: true,
+            loop: true,
+            speed: 3,
+            preload: true
+        });
     });
 </script>
+
+
+<script src="/script.js" defer></script>
 </body>
 </html>

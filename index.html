@@ -1,202 +1,158 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Nick Ramos - Network Engineering & Cybersecurity | Zero Trust, Proxmox homelab, OPNsense, self-hosted infrastructure.">
-        <title>Nick Ramos - Network Engineering & Cybersecurity</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cybersecurity Portfolio | Nick Ramos</title>
+    <meta name="description" content="Technical projects, labs, and writeups by Nick Ramos - Security Engineering & Ethical Hacking">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/style.css">
     
-        <!-- Open Graph / Social Sharing -->
-        <meta property="og:title" content="Nick Ramos - Network Engineering & Cybersecurity">
-        <meta property="og:description" content="Zero Trust homelab, Proxmox, OPNsense, self-hosted infrastructure & practical cybersecurity projects.">
-        <meta property="og:image" content="https://nick-ramos.com/assets/web-images/home-og.jpg">
-        <meta property="og:url" content="https://nick-ramos.com">
-        <meta property="og:type" content="website">
-        <meta property="og:site_name" content="Nick Ramos">
-    
-        <!-- Twitter Cards -->
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Nick Ramos - Network Engineering & Cybersecurity">
-        <meta name="twitter:description" content="Zero Trust homelab, Proxmox, OPNsense, self-hosted infrastructure & practical cybersecurity projects.">
-        <meta name="twitter:image" content="https://nick-ramos.com/assets/web-images/home-og.jpg">
-    
-        <link rel="preload" href="style.css" as="style">
-        <link rel="stylesheet" href="style.css">
-    
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" as="style">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
-        <link rel="preload" href="script.js" as="script">
-    
-        <link rel="icon" type="image/x-icon" href="favicon.ico">
-        <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-        <link rel="manifest" href="site.webmanifest">
-    </head>
-    <body>
-        <!-- Navigation -->
+</head>
+<body>
+<!-- Header Navbar -->
+<header class="site-header">
+    <div class="container">
         <nav id="navbar">
-            <div class="container">
-                <ul class="nav-links"></ul>
-
-                <div class="hamburger">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
+            <ul class="nav-links"></ul>
         </nav>
+    </div>
+</header>
 
-        <!-- Hero Section -->
-        <section id="hero">
-            <div class="container hero-grid">
-                <!-- Left: Text Content -->
-                <div class="hero-text">
-                    <span class="hero-tag">Network Engineering & Cybersecurity</span>
-                    <h1 class="hero-title">Nick Ramos</h1>
-                    <p class="hero-subtitle">Building secure systems. Breaking into them. Turning homelabs into production-grade infrastructure.</p>
+<!-- Floating Mobile Button -->
+<button id="floating-menu-btn" class="floating-btn">☰</button>
 
-                    <div class="hero-buttons">
-                        <!-- Main CTA Button -->
-                        <a href="#contact" class="btn main-cta">
-                            <span class="btn-icon">↓</span>
-                            Let's Connect
-                        </a>
 
-                        <!-- Social/Profile Icon Buttons -->
-                        <div class="social-buttons">
-                            <a href="https://github.com/nickramos12" target="_blank" class="icon-btn" title="GitHub">
-                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub" class="btn-icon">
-                            </a>
-                            <a href="https://www.codewars.com/users/nickramos" target="_blank" class="icon-btn" title="Codewars">
-                                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@latest/icons/codewars.svg" alt="Codewars" class="btn-icon">
-                            </a>
-                            <a href="https://tryhackme.com/p/nickramos" target="_blank" class="icon-btn" title="TryHackMe">
-                                <img src="https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/svg/tryhackme.svg" alt="TryHackMe" class="btn-icon">
-                            </a>
-                        </div>
-                    </div>
-                </div>
+<!-- Main Content -->
+<main class="main-content">
+    
+    
+    <!-- Hero Section --------------------------------------->
+    <section id="hero">
+        <div class="container hero-grid">
 
-                <!-- Right: Hero Visual -->
-                <div class="hero-visual" aria-hidden="true">
-                    <!-- Cool visual / animation will go here -->
-                </div>
-            </div>
-        </section>
+            <!-- Left: Text Content -->
+            <div class="hero-text">
+                <span class="hero-tag">Security Engineering & Penetration Testing</span>
+                <h1 class="hero-title">Nick Ramos</h1>
+                <p class="hero-subtitle">
+                    Building secure systems. Breaking into them. Turning homelabs into production-grade infrastructure.
+                </p>
 
-        <!-- Skills -->
-        <section id="skills">
-            <div class="container">
-                <h2 class="section-title">Technical Skills</h2>
-                <p class="section-subtitle">Core tools and technologies I work with daily</p>
-                <div class="skills-grid" id="skills-grid">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects -->
-        <section id="projects">
-            <div class="container">
-                <h2 class="section-title">Projects</h2>
-                <p class="section-subtitle">Hands-on builds and infrastructure work</p>
-                <div class="projects-grid" id="projects-grid">
-                </div>
-                <div style="text-align: center; margin-top: 60px;">
-                    <a href="/documentation/index.html" class="btn main-cta">
-                        Browse Full Documentation →
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn main-cta">
+                        <span class="btn-icon">↓</span>
+                        Let's Connect
                     </a>
-                </div>
-            </div>
-        </section>
 
-        <!-- Work Experience -->
-        <section id="experience">
-            <div class="container">
-                <h2 class="section-title">Professional Experience</h2>
-                <p class="section-subtitle">From building a business to building secure infrastructure</p>
-
-                <div class="timeline">
-
-                    <!-- Most Recent -->
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-date">2025 — Present</div>
-                            <div class="timeline-header">
-                                <h3>Self-Directed Cybersecurity Student & Homelab Builder</h3>
-                                <p class="company">Independent Projects • Atlanta, GA</p>
-                            </div>
-                            <p class="timeline-desc">Actively building hands-on experience through homelab projects while studying for CompTIA Security+ and transitioning into cybersecurity.</p>
-                            <ul class="experience-list">
-                                <li>Designed and implemented a segmented Zero Trust network using OPNsense, UniFi, VLANs, and Cloudflare Tunnel</li>
-                                <li>Deployed and hardened a Proxmox homelab with Docker containers, Nginx reverse proxy, Fail2Ban, and WireGuard VPN</li>
-                                <li>Focused on infrastructure hardening, network segmentation, and practical security implementations</li>
-                            </ul>
-                            <div class="timeline-tags">
-                                <span class="tag">Zero Trust</span>
-                                <span class="tag">Proxmox</span>
-                                <span class="tag">Network Security</span>
-                                <span class="tag">Homelab</span>
-                            </div>
-                        </div>
+                    <div class="social-buttons">
+                        <a href="https://github.com/nickramos12" target="_blank" class="icon-btn" title="GitHub">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
+                        </a>
+                        <a href="https://www.codewars.com/users/nickramos" target="_blank" class="icon-btn" title="Codewars">
+                            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@latest/icons/codewars.svg" alt="Codewars">
+                        </a>
+                        <a href="https://tryhackme.com/p/nickramos" target="_blank" class="icon-btn" title="TryHackMe">
+                            <img src="https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/svg/tryhackme.svg" alt="TryHackMe">
+                        </a>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Older Experience -->
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-date">2019 — 2025</div>
-                            <div class="timeline-header">
-                                <h3>Agency Owner / Agent</h3>
-                                <p class="company">Uplift Insurance Group • Alpharetta, GA</p>
-                            </div>
-                            <p class="timeline-desc">Built the agency from scratch & managed full business operations and regulatory compliance for 150+ client portfolios annually. Acquired Jan '25.</p>
-                            <ul class="experience-list">
-                                <li>Managed full business operations including compliance, budgeting, and risk assessment</li>
-                                <li>Maintained 100% regulatory compliance through audits, policy reviews, and documentation</li>
-                                <li>Hired, trained, and mentored junior staff for sales & support</li>
-                                <li>Handled all field underwriting for entire sales team</li>
-                            </ul>
-                            <div class="timeline-tags">
-                                <span class="tag">Operations</span>
-                                <span class="tag">Compliance</span>
-                                <span class="tag">Licensing</span>
-                                <span class="tag">Risk Management</span>
-                            </div>
+            <!-- Right: Hero Visual -->
+            <div class="hero-visual" aria-hidden="true">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
                         </div>
+                        <div class="terminal-title">nick@homelab ~</div>
                     </div>
-
+                    <div class="terminal-body" id="terminal-body">
+                        <!-- JS will fill this -->
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Certifications -->
-        <section id="certifications">
-            <div class="container">
-                <h2 class="section-title">Certifications</h2>
-                <p class="section-subtitle">A snapshot of my industry qualifications</p>
-                <div class="certifications-grid" id="certifications-grid">
-                    <!-- Populated by JS -->
-                </div>
+
+    <!-- Tools & Technologies ------------------------------->
+    <section id="tools">
+        <div class="container">
+            <h2 class="section-title">Tools & Technologies</h2>
+            <p class="section-subtitle">Core tools and technologies I work with regularly</p>
+
+            <div class="skills-grid" id="skills-grid">
+                <!-- Populated by JS -->
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Contact -->
-        <section id="contact">
-            <div class="container">
-                <h2 class="section-title">Looking for someone like me?</h2>
-                <p class="section-subtitle">I help build secure, self-hosted infrastructure and Zero Trust networks. Let's talk.</p>
 
-                <div class="contact-cta">
-                    <a href="#contact" class="btn main-cta">Schedule a Call</a>
-                </div>
+    <!-- Projects -------------------------------------------->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <p class="section-subtitle">Hands-on builds and infrastructure work</p>
+
+            <div class="projects-grid" id="projects-grid">
+                <!-- Populated by JS -->
             </div>
-        </section>
 
-        <!-- Footer -->
-        <footer>
-            <div class="container">
-                <p>&copy; 2026 Nix-forge.com. All rights reserved.</p>
+            <div style="text-align: center; margin-top: 60px;">
+                <a href="/documentation/index.html" class="btn main-cta">View All Documentation →</a>
             </div>
-        </footer>
-        
-        <!-- Javascript file -->
-        <script src="script.js"></script>
-    </body>
+        </div>
+    </section>
+
+
+    <!-- Experience ---------------------------------------->
+    <section id="experience">
+        <div class="container">
+            <h2 class="section-title">Professional Experience</h2>
+            <p class="section-subtitle">From building a business to building secure infrastructure</p>
+
+            <div class="timeline" id="experience-timeline">
+                <!-- Populated by JS or static -->
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Certifications ------------------------------------>
+    <section id="certifications">
+        <div class="container">
+            <h2 class="section-title">Certifications</h2>
+            <p class="section-subtitle">A snapshot of my industry qualifications</p>
+            <div class="certifications-grid" id="certifications-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Contact -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Looking for someone like me?</h2>
+            <p class="section-subtitle">I help build secure, self-hosted infrastructure and Zero Trust networks. Let's talk.</p>
+
+            <div class="contact-cta">
+                <a href="#" class="btn main-cta">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+
+</main>
+<script src="/script.js" defer></script>
+</body>
 </html>
