@@ -1,0 +1,100 @@
+﻿[
+  {
+    "id": "basic-pentesting",
+    "title": "Basic Pentesting",
+    "coverImage": "/images/basic-pentesting/cover-photo.jpg",
+    "type": "Lab",
+    "date": "2026-06-16",
+    "tldr": "Performed nmap recon and SMB/web enumeration with Gobuster and Netexec, identified weak credential hints, brute-forced Jan’s password with Hydra, SSH’d in as Jan, located Kay’s insecure RSA private key, cracked its passphrase with John the Ripper, and escalated to Kay (and root access) using the key.",
+    "attributes": {
+      "OS": "Linux",
+      "Difficulty": "Easy"
+    },
+    "tools": ["NMAP", "SearchSploit", "NetExec", "Gobuster", "Hydra", "JohnTheRipper"],
+    "tags": ["pentesting", "credential cracking", "directory enumeration"]
+  },
+  {
+    "id": "cyborg",
+    "title": "Cyborg",
+    "coverImage": "/images/cyborg/cover-photo.jpg",
+    "type": "Lab",
+    "date": "2026-06-12",
+    "tldr": "Performed nmap reconnaissance on the target, enumerated directories with Gobuster, cracked an MD5 hash with Hashcat to find the password, extracted a BorgBackup archive to retrieve SSH credentials, logged in as user Alex, and escalated to root via a vulnerable sudo shell script that executed commands as root.",
+    "attributes": {
+      "OS": "Linux",
+      "Difficulty": "Easy"
+    },
+    "tools": ["NMAP", "SearchSploit", "Gobuster", "Hashcat", "BorgBackup"],
+    "tags": ["hashcracking", "privilege-escalation", "borgbackup", "enumeration"]
+  },
+  {
+    "id": "lazyadmin",
+    "title": "LazyAdmin",
+    "coverImage": "/images/lazyadmin/cover-photo.jpg",
+    "type": "Lab",
+    "date": "2026-06-17",
+    "tldr": "Performed nmap recon and web enumeration with Gobuster, discovered a SweetRice CMS instance and extracted an admin hash from a SQL backup file, cracked it with Hashcat to log into the admin panel, exploited the Ads feature to inject and execute PHP code for command execution as www-data, found user.txt, and escalated to root by overwriting a script executed with sudo privileges.",
+    "attributes": {
+      "OS": "Linux",
+      "Difficulty": "Easy"
+    },
+    "tools": ["NMAP", "SearchSploit", "Gobuster", "Hashcat"],
+    "tags": ["pentesting", "web exploitation", "cms", "privilege escalation", "hash cracking"]
+  },
+  {
+    "id": "heartbleed",
+    "title": "HeartBleed",
+    "coverImage": "/images/heartbleed/cover-photo.jpg",
+    "type": "Lab",
+    "date": "2026-06-08",
+    "tldr": "Performed nmap reconnaissance to identify an nginx HTTPS service on port 443. Confirmed the Heartbleed vulnerability with the ssl-heartbleed NSE script, then used a public Python exploit to dump server memory and extract private keys plus credentials.",
+    "attributes": {
+      "OS": "Linux",
+      "Difficulty": "Easy"
+    },
+    "tools": ["NMAP", "Python"],
+    "tags": ["pentesting", "heartbleed", "openssl", "memory-disclosure", "vulnerability"]
+  },
+  {
+    "id": "pickle-rick",
+    "title": "Pickle Rick",
+    "coverImage": "/images/pickle-rick/cover-photo.jpg",
+    "type": "Lab",
+    "date": "2026-06-05",
+    "tldr": "Gained initial access to the Pickle Rick web server by brute-forcing directories, finding login credentials in robots.txt, and accessing the command panel. Located ingredients by exploring the filesystem, bypassing restricted commands with strings, and leveraging full sudo privileges as www-data.",
+    "attributes": {
+      "OS": "Linux",
+      "Difficulty": "Easy"
+    },
+    "tools": ["NMAP", "Gobuster", "Curl"],
+    "tags": ["tryhackme", "pickle-rick", "web-shell", "privilege-escalation", "enumeration", "sudo"]
+  },
+  {
+    "id": "proxmox-server",
+    "title": "Building a Private Cloud Homelab on Proxmox",
+    "coverImage": "/images/proxmox-server/cover-photo.jpg",
+    "type": "Project",
+    "date": "2026-02-10",
+    "tldr": "Upgraded and consolidated a Lenovo ThinkCentre M720s into a private cloud homelab running Proxmox VE. The system now features 32GB RAM, ZFS-backed primary storage, automated snapshots, and four streamlined VMs handling reverse proxy (screened subnet), media streaming, security tooling, and infrastructure management. All Docker workloads route through Gluetun for outbound isolation. The environment integrates with a broader Zero Trust network architecture via VLAN-aware bridging, MAC security, and Cloudflare tunnels.",
+    "attributes": {
+      "OS": "Proxmox VE",
+      "Difficulty": "N/A"
+    },
+    "tools": ["Proxmox", "ZFS", "Docker Compose", "Gluetun", "Zoraxy", "Jellyfin", "Cloudflare"],
+    "tags": ["proxmox", "homelab", "zfs", "docker", "zero-trust", "vlan", "self-hosted", "private-cloud"]
+  },
+  {
+    "id": "zero-trust-network",
+    "title": "Implementing Zero Trust Network Architecture in Homelab",
+    "coverImage": "/images/zero-trust-network/cover-photo.jpg",
+    "type": "Project",
+    "date": "2026-04-15",
+    "tldr": "Designed and implemented a segmented Zero Trust-inspired network architecture for a self-hosted media server environment. Configured strict micro-segmentation across 6 VLANs, deployed reverse proxy with WAF, Cloudflare Tunnel for secure remote access, and compensating controls (WireGuard VPN, MAC port security, BPDU Guard). Reduced attack surface by enforcing least-privilege firewall rules and isolating high-risk devices.",
+    "attributes": {
+      "OS": "OPNsense",
+      "Difficulty": "N/A"
+    },
+    "tools": ["OPNsense", "UniFi", "Cloudflare Tunnel", "Zoraxy", "WireGuard", "VLAN", "BPDU Guard"],
+    "tags": ["zero-trust", "opnsense", "unifi", "vlan-segmentation", "homelab", "network-security", "cloudflare", "dmz", "wireguard", "layer2-security"]
+  }
+]

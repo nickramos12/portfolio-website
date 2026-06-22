@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Samples</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+        
+        <!-- asciinema reqs -->
+        <script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.css">
+        
+        <!-- stylesheet link -->
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+
+        <!-- Header Navbar -->
+        <header class="site-header">
+            <div class="container">
+                <nav id="navbar">
+                    <ul class="nav-links"></ul>
+                </nav>
+            </div>
+        </header>
+    
+        <!-- Floating Mobile Button -->
+        <button id="floating-menu-btn" class="floating-btn">☰</button>
+
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- HEADINGS -->
+            <h1>Example Main Title (H1)</h1>
+            <h2>Example Section Heading (H2)</h2>
+            <h3>Example Sub-Section Heading (H3)</h3>
+            <h4>Example Minor Heading (H4)</h4>
+            <h5>Example Small Heading (H5)</h5>
+            <h6>Example Tiny Heading (H6)</h6>
+        
+            <!-- PARAGRAPH TEXT -->
+            <p>This is normal paragraph text. It is the main readable content on the page.</p>
+        
+            <!-- INLINE TEXT ELEMENTS -->
+            <p>Here is some <strong>important text</strong> using strong.</p>
+            <p>Here is some <b>bold text</b> using b (avoid this, use strong instead).</p>
+            <p>Here is some <em>emphasized text</em> using em.</p>
+            <p>Here is some <i>italic text</i> using i (avoid this, use em instead).</p>
+            <p>Here is some <small>small print or secondary text</small>.</p>
+            <p>Here is some <mark>highlighted text</mark> using mark.</p>
+        
+            <!-- LINK -->
+            <p>Visit the <a href="#">projects page</a> for more examples.</p>
+        
+            <!-- CODE -->
+            <p>Run this command: <code>npm install</code> to get started.</p>
+        
+            <!-- PRE + CODE BLOCK -->
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-title">example.js</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code>&lt;div class="example"&gt;
+                Hello World
+            &lt;/div&gt;</code></pre>
+            </div>
+        
+            <!-- KEYBOARD INPUT -->
+            <p>Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to copy.</p>
+        
+            <!-- SAMPLE OUTPUT -->
+            <p>Terminal output example: <samp>Build successful</samp></p>
+        
+            <!-- LISTS -->
+            <ul>
+                <li>First unordered list item</li>
+                <li>Second unordered list item</li>
+            </ul>
+        
+            <ol>
+                <li>First ordered list item</li>
+                <li>Second ordered list item</li>
+            </ol>
+        
+            <!-- BLOCKQUOTE -->
+            <blockquote>
+                This is a quoted section of text from another source.
+            </blockquote>
+        
+            <!-- HORIZONTAL RULE -->
+            <hr>
+        
+            <!-- IMAGE (for completeness) -->
+            <div class="image-container">
+                <img src="/images/default_cover.jpg" alt="Description of image">
+                <p class="image-caption">Caption box hides without text</p>
+            </div>
+
+            <!-- Custom Code Block -->
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-title">example.js</span>
+                    <button class="copy-button">Copy</button>
+                </div>
+                <pre><code>&lt;div class="example"&gt;
+                Hello World
+            &lt;/div&gt;</code></pre>
+            </div>
+
+            <!-- Asciinema Block -->
+            <div class="asciinema-container">
+                <div id="cast1" class="asciinema-player"></div>
+                <p class="asciinema-caption">Your caption here</p>
+            </div>
+            
+            <!-- How to load Asciinema onto the article -->
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    AsciinemaPlayer.create('/assets/borgbackup.cast', document.getElementById('cast1'), {
+                        cols: 120,
+                        rows: 30,
+                        theme: 'tango',
+                        controls: "auto",
+                        autoPlay: true,
+                        loop: true,
+                        speed: 2,
+                        preload: true
+                    });
+                });
+            </script>
+            
+            <!-- the below MUST be in the head section:
+            
+            <script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.css">
+            
+            -->
+            
+            
+            
+        </main>
+        <script src="script.js" defer></script>
+    </body>
+</html>

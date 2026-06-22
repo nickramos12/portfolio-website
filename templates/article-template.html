@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Article Template</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="author" content="Nick Ramos">
+
+    <!-- Open Graph + Twitter (JS will override these on article pages) -->
+    <meta property="og:title" content="Nick Ramos">
+    <meta property="og:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta property="og:image" content="https://nick-ramos.com/images/default_cover.jpg">
+    <meta property="og:url" content="https://nick-ramos.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nick Ramos">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nick Ramos">
+    <meta name="twitter:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="twitter:image" content="https://nick-ramos.com/images/default_cover.jpg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+
+    <!-- asciinema stuff -->
+    <script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.css">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<!-- Header Navbar -->
+<header class="site-header">
+    <div class="container">
+        <nav id="navbar">
+            <ul class="nav-links"></ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Floating Mobile Button -->
+<button id="floating-menu-btn" class="floating-btn">☰</button>
+
+
+<!-- Main Content -->
+<main class="main-content">
+    <section class="blog-header">
+        <img src="" alt="Cover Photo" class="blog-cover">
+
+        <div class="blog-meta">
+            <a href="/documentation" class="back-link">← Back to Library</a>
+
+            <h1 class="blog-title"></h1>
+
+            <div class="blog-info"></div>
+
+            <div class="tools">
+                <!-- populated by JS -->
+            </div>
+
+            <div class="tldr">
+                <div class="tldr-header">
+                    <strong>TLDR:</strong>
+                    <button class="tldr-toggle">Expand</button>
+                </div>
+                <div class="tldr-content">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!---------------------- start blog content --------------------------------------------->
+    
+    
+    <h2>Recon</h2>
+    
+    <p>Some text here......</p>
+    
+    <h2>Enumeration</h2>
+
+    <p>Some text here......</p>
+
+    <h2>Exploitation</h2>
+    
+    <p>Some text here......</p>
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+    <!---------------------- end blog content --------------------------------------------->
+    
+    <!-- Recent Posts -->
+    <section class="recent-posts">
+        <h2 class="section-title">Recent Posts</h2>
+        <div class="recent-grid" id="recent-grid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+
+</main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            AsciinemaPlayer.create('/assets/borgbackup.cast', document.getElementById('cast1'), {
+                cols: 120,
+                rows: 30,
+                theme: 'tango',
+                controls: "auto",
+                autoPlay: true,
+                loop: true,
+                speed: 2,
+                preload: true
+            }); // add more by copying this
+        });
+    </script>
+
+
+<script src="/script.js" defer></script>
+</body>
+</html>

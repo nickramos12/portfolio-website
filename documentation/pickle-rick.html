@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pickle Rick | Nick Ramos</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="author" content="Nick Ramos">
+
+    <!-- Open Graph + Twitter (JS will override these on article pages) -->
+    <meta property="og:title" content="Nick Ramos">
+    <meta property="og:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta property="og:image" content="https://nick-ramos.com/images/default_cover.jpg">
+    <meta property="og:url" content="https://nick-ramos.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nick Ramos">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nick Ramos">
+    <meta name="twitter:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="twitter:image" content="https://nick-ramos.com/images/default_cover.jpg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+
+    <!-- asciinema stuff -->
+    <script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.css">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<!-- Header Navbar -->
+<header class="site-header">
+    <div class="container">
+        <nav id="navbar">
+            <ul class="nav-links"></ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Floating Mobile Button -->
+<button id="floating-menu-btn" class="floating-btn">☰</button>
+
+
+<!-- Main Content -->
+<main class="main-content">
+    <section class="blog-header">
+        <img src="/images/pickle-rick/cover-photo.jpg" alt="Cover Photo" class="blog-cover">
+
+        <div class="blog-meta">
+            <a href="/documentation" class="back-link">← Back to Library</a>
+
+            <h1 class="blog-title"></h1>
+
+            <div class="blog-info"></div>
+
+            <div class="tools">
+                <!-- populated by JS -->
+            </div>
+
+            <div class="tldr">
+                <div class="tldr-header">
+                    <strong>TLDR:</strong>
+                    <button class="tldr-toggle">Expand</button>
+                </div>
+                <div class="tldr-content">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!---------------------- start blog content --------------------------------------------->
+
+    <!-- ===================== RECONNAISSANCE ===================== -->
+    <h2>Reconnaissance</h2>
+    <p>I began by verifying connectivity with ping and scanning the target using nmap to identify open ports and services.</p>
+    <p>After confirming a web server was running, I used curl to inspect the homepage and discovered the username <code>R1ckRul3s</code>.</p>
+
+    <div class="asciinema-container">
+        <div id="cast1" class="asciinema-player"></div>
+        <p class="asciinema-caption"><code>curl -v http://10.64.147.126</code></p>
+    </div>
+
+    <p>I then performed directory brute-forcing with Gobuster and discovered several interesting paths, most notably <code>robots.txt</code> which contained the password <code>Wubbalubbadubdub</code>, and <code>login.php</code>.</p>
+
+    <div class="asciinema-container">
+        <div id="cast2" class="asciinema-player"></div>
+        <p class="asciinema-caption">Gobuster Directory Enumeration</p>
+    </div>
+
+    <div class="image-container">
+        <img src="/images/pickle-rick/robots.png" alt="robots.txt">
+        <p class="image-caption"></p>
+    </div>
+
+    <p>Using the credentials from robots.txt, I logged into the application and gained access to the Command Panel (a restricted pseudo-CLI web shell).</p>
+
+    <div class="image-container">
+        <img src="/images/pickle-rick/logging-in.png" alt="Login">
+        <p class="image-caption"></p>
+    </div>
+
+    <!-- ===================== EXPLOITATION ===================== -->
+    <h2>Exploitation</h2>
+    <p>Once inside the command panel, I began hunting for the three ingredients.</p>
+
+    <h3>First Ingredient</h3>
+    <p>Located directly in the web root as <code>Sup3rS3cretPickl3Ingred.txt</code>.</p>
+
+    <div class="image-container">
+        <img src="/images/pickle-rick/directory-start.png" alt="Web Root">
+        <p class="image-caption"></p>
+    </div>
+
+    <div class="image-container">
+        <img src="/images/pickle-rick/first-ingre.png" alt="First Ingredient">
+        <p class="image-caption"></p>
+    </div>
+
+    <h3>Second Ingredient</h3>
+    <p>Following the clue, I checked <code>/home/rick/</code> and found the file <code>second ingredients</code>. Since cat/less were disabled, I used <code>strings</code> to read it.</p>
+
+    <div class="image-container">
+        <img src="/images/pickle-rick/sec-ingre.png" alt="Second Ingredient">
+        <p class="image-caption"></p>
+    </div>
+
+    <h3>Third Ingredient</h3>
+    <p>After checking privileges with <code>sudo -l</code> (which showed full root access), I listed the root directory and retrieved the final ingredient.</p>
+
+    <div class="image-container">
+        <img src="/images/pickle-rick/privileges.png" alt="sudo -l">
+        <p class="image-caption"></p>
+    </div>
+
+    <div class="image-container">
+        <img src="/images/pickle-rick/last-ingre.png" alt="Third Ingredient">
+        <p class="image-caption"></p>
+    </div>
+
+    <!-- ===================== KEY TAKEAWAYS ===================== -->
+    <h2>Key Takeaways</h2>
+
+    <p><strong>Always Check robots.txt</strong><br>During web reconnaissance, robots.txt frequently contains hidden paths or credentials that significantly speed up enumeration.</p>
+
+    <p><strong>Restricted Shells</strong><br>When common commands like cat, less, and more are disabled, tools like strings become invaluable for extracting readable text from files.</p>
+
+    <p><strong>Check sudo Rights Early</strong><br>Running <code>sudo -l</code> should be one of the first commands after gaining shell access — it can instantly reveal full system control.</p>
+
+    <p><strong>Web Command Execution</strong><br>Web shells (even limited ones) combined with poor file permissions can lead to complete server compromise very quickly.</p>
+
+    <p><strong>Systematic Enumeration</strong><br>Following clues while thoroughly exploring the filesystem (web root → user directories → root) is often enough to solve beginner boxes without complex exploits.</p>
+
+
+
+
+    <!---------------------- end blog content --------------------------------------------->
+
+    <!-- Recent Posts -->
+    <section class="recent-posts">
+        <h2 class="section-title">Recent Posts</h2>
+        <div class="recent-grid" id="recent-grid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        AsciinemaPlayer.create('/images/pickle-rick/recon2_curl_picklerick.cast', document.getElementById('cast1'), {
+            cols: 120,
+            rows: 30,
+            theme: 'monokai',
+            controls: true,
+            autoPlay: true,
+            loop: true,
+            speed: 3,
+            preload: true
+        });
+
+        AsciinemaPlayer.create('/images/pickle-rick/enum_gobuster_picklerick.cast', document.getElementById('cast2'), {
+            cols: 120,
+            rows: 30,
+            theme: 'monokai',
+            controls: true,
+            autoPlay: true,
+            loop: true,
+            speed: 5,
+            preload: true
+        });
+    });
+</script>
+
+
+<script src="/script.js" defer></script>
+</body>
+</html>

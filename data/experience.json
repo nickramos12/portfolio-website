@@ -1,0 +1,31 @@
+﻿{
+  "experiences": [
+    {
+      "id": "current",
+      "date": "2025 — Present",
+      "title": "Self-Directed Cybersecurity Student & Homelab Builder",
+      "company": "Independent Projects • Atlanta, GA",
+      "description": "Actively building hands-on experience through homelab projects while studying for CompTIA Security+ and transitioning into cybersecurity.",
+      "bullets": [
+        "Designed and implemented a segmented Zero Trust network using OPNsense, UniFi, VLANs, and Cloudflare Tunnel",
+        "Deployed and hardened a Proxmox homelab with Docker containers, Nginx reverse proxy, Fail2Ban, and WireGuard VPN",
+        "Focused on infrastructure hardening, network segmentation, and practical security implementations"
+      ],
+      "tags": ["Zero Trust", "Proxmox", "Network Security", "Homelab"]
+    },
+    {
+      "id": "insurance",
+      "date": "2019 — 2025",
+      "title": "Agency Owner / Agent",
+      "company": "Uplift Insurance Group • Alpharetta, GA",
+      "description": "Built the agency from scratch & managed full business operations and regulatory compliance for 150+ client portfolios annually. Acquired Jan '25.",
+      "bullets": [
+        "Managed full business operations including compliance, budgeting, and risk assessment",
+        "Maintained 100% regulatory compliance through audits, policy reviews, and documentation",
+        "Hired, trained, and mentored junior staff for sales & support",
+        "Handled all field underwriting for entire sales team"
+      ],
+      "tags": ["Operations", "Compliance", "Risk Management", "Leadership"]
+    }
+  ]
+}

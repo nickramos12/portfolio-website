@@ -1,0 +1,59 @@
+﻿{
+  "skills": [
+    {
+      "name": "Proxmox",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/proxmox/proxmox-original-wordmark.svg",
+      "description": "Hypervisor for virtualization and self-hosted infrastructure"
+    },
+    {
+      "name": "Docker",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg",
+      "description": "Containerization platform"
+    },
+    {
+      "name": "Linux",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg",
+      "description": "Operating system"
+    },
+    {
+      "name": "Ubuntu",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/ubuntu/ubuntu-original.svg",
+      "description": "Linux distribution"
+    },
+    {
+      "name": "OPNsense",
+      "icon": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/svg/opnsense.svg",
+      "description": "Open source firewall and router"
+    },
+    {
+      "name": "UniFi",
+      "icon": "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/svg/ubiquiti-unifi.svg",
+      "description": "Networking hardware and software"
+    },
+    {
+      "name": "Cloudflare",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg",
+      "description": "CDN, DNS, and security services"
+    },
+    {
+      "name": "Nginx",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg",
+      "description": "Web server and reverse proxy"
+    },
+    {
+      "name": "Git",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg",
+      "description": "Version control"
+    },
+    {
+      "name": "Bash",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg",
+      "description": "Shell scripting"
+    },
+    {
+      "name": "Python",
+      "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg",
+      "description": "Programming language"
+    }
+  ]
+}

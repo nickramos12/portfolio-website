@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Proxmox Server | Nick Ramos</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="author" content="Nick Ramos">
+
+    <!-- Open Graph + Twitter (JS will override these on article pages) -->
+    <meta property="og:title" content="Nick Ramos">
+    <meta property="og:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta property="og:image" content="https://nick-ramos.com/images/default_cover.jpg">
+    <meta property="og:url" content="https://nick-ramos.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nick Ramos">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nick Ramos">
+    <meta name="twitter:description" content="Technical cybersecurity writeups, homelab projects, and notes by Nick Ramos.">
+    <meta name="twitter:image" content="https://nick-ramos.com/images/default_cover.jpg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+
+    <!-- asciinema stuff -->
+    <script src="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/asciinema-player@3.7.0/dist/bundle/asciinema-player.min.css">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<!-- Header Navbar -->
+<header class="site-header">
+    <div class="container">
+        <nav id="navbar">
+            <ul class="nav-links"></ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Floating Mobile Button -->
+<button id="floating-menu-btn" class="floating-btn">☰</button>
+
+
+<!-- Main Content -->
+<main class="main-content">
+    <section class="blog-header">
+        <img src="" alt="Cover Photo" class="blog-cover">
+
+        <div class="blog-meta">
+            <a href="/documentation" class="back-link">← Back to Library</a>
+
+            <h1 class="blog-title"></h1>
+
+            <div class="blog-info"></div>
+
+            <div class="tools">
+                <!-- populated by JS -->
+            </div>
+
+            <div class="tldr">
+                <div class="tldr-header">
+                    <strong>TLDR:</strong>
+                    <button class="tldr-toggle">Expand</button>
+                </div>
+                <div class="tldr-content">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!---------------------- start blog content --------------------------------------------->
+
+    <h2>Introduction</h2>
+    <p>What began as a basic media server has evolved into a consolidated, secure, and resilient private cloud homelab. Running on Proxmox with strict network segmentation, ZFS storage, automated backups, and Docker-based services, the environment delivers full self-hosted media streaming and infrastructure management with no recurring service fees.</p>
+
+    <h2>Hardware &amp; Operating Systems</h2>
+    <p>Beyond the base Lenovo M720s chassis, the following hardware configuration was implemented to support the Proxmox homelab environment.</p>
+    <p><strong>Chassis:</strong> Small Form Factor design limits internal expansion options, particularly for full-height PCIe cards or additional drives. Cooling and low-profile component availability remain considerations for future upgrades.</p>
+    <p><strong>Central Processing Unit (CPU):</strong> Intel Core i5-8400 (6 cores, 2.8 GHz base). The integrated Intel Quick Sync hardware transcoder continues to provide efficient 4K media transcoding without requiring a discrete GPU.</p>
+    <p><strong>Random Access Memory (RAM):</strong> Upgraded from the original 24GB configuration to a total of 32GB DDR4. This provides ample headroom for consolidated workloads and concurrent service operation.</p>
+    <p><strong>Storage (Boot):</strong> 512GB NVMe SSD installed in the factory M.2 slot with an aftermarket caddy and custom heatsink for thermal management and longevity.</p>
+    <p><strong>Storage (Primary):</strong> Single 8TB Seagate IronWolf HDD configured as a ZFS pool named <code>tank</code>. While a single-disk ZFS setup does not provide redundancy, it delivers data integrity through checksums and self-healing capabilities.</p>
+    <p><strong>Storage (Backup):</strong> 8TB external desktop HDD (<code>external1</code>) connected via USB 3.0. Serves as the target for weekly backups of the <code>tank</code> pool and VM/container snapshots.</p>
+    <p><strong>Network Interface:</strong> Integrated Intel I219-V Gigabit NIC. The Proxmox host bridge has been reconfigured as VLAN-aware to support tagged traffic for the segmented network.</p>
+    <p>This hardware foundation balances cost, performance, and reliability for the current homelab workload.</p>
+
+    <div class="image-container">
+        <img src="/images/proxmox-server/internals.jpg" alt="Lenovo Internals">
+        <p class="image-caption"></p>
+    </div>
+    <div class="image-container">
+        <img src="/images/proxmox-server/external.jpg" alt="Lenovo External View">
+        <p class="image-caption"></p>
+    </div>
+
+    <h3>Operating Systems &amp; Virtualization</h3>
+    <p><strong>Proxmox VE</strong> runs as the bare-metal hypervisor, providing centralized web-based management of all virtual machines and storage. Built on Debian, it offers robust ZFS support, snapshotting, and networking flexibility.</p>
+    <p>All workloads now run as <strong>Ubuntu Server</strong> virtual machines. Docker Compose manages application stacks inside these VMs, ensuring isolation and avoiding nesting complications. This approach prioritizes security and operational simplicity over the lighter resource footprint of LXCs.</p>
+
+    <h2>Virtualization Map</h2>
+    <p>The infrastructure has been consolidated from six separate entities into a more efficient set of four purpose-built VMs. This reduces overhead while maintaining clear separation of concerns.</p>
+    <table>
+        <thead>
+        <tr>
+            <th>VM ID</th>
+            <th>Name</th>
+            <th>Purpose</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr><td>100</td><td>access</td><td>Placed in the screened subnet (DMZ). Hosts the reverse proxy (Zoraxy) and associated tools for secure external access.</td></tr>
+        <tr><td>102</td><td>streaming</td><td>Consolidated media environment. Runs Jellyfin and all supporting media applications via Docker. Receives NFS mounts from the host tank pool under strict firewall controls.</td></tr>
+        <tr><td>103</td><td>kali-linux</td><td>Dedicated Kali Linux VM used exclusively for security challenges, TryHackMe rooms, and ethical hacking practice.</td></tr>
+        <tr><td>105</td><td>control</td><td>Centralized management layer hosting infrastructure dashboards and monitoring GUIs.</td></tr>
+        </tbody>
+    </table>
+
+    <h2>Storage &amp; Backup</h2>
+    <p>The storage and backup strategy was designed for data integrity, snapshot-based recovery, and secure outbound traffic.</p>
+    <p><strong>ZFS Pool:</strong> Primary storage uses a ZFS pool named <code>tank</code> on the 8TB Seagate IronWolf HDD. It provides checksums for data integrity and supports efficient snapshots.</p>
+    <p><strong>Backup Schedule:</strong> Weekly full backups of the <code>tank</code> pool are performed to the 8TB external USB drive (<code>external1</code>).</p>
+    <p><strong>Automated Snapshots:</strong> VM and container snapshots are automatically taken every Sunday to enable quick rollback if needed.</p>
+    <p>This setup ensures reliable data protection while maintaining operational security for containerized services.</p>
+
+    <h2>Networking Integration</h2>
+    <p>The homelab is fully integrated with the existing Zero Trust-inspired network architecture. The Proxmox host connects to the UniFi switch via a trunk port with MAC address whitelisting. VLAN-aware bridging allows each VM to operate on its designated segment.</p>
+    <p><strong>Access VM:</strong> Resides in the tightly restricted /30 screened subnet (DMZ).</p>
+    <p><strong>VLAN Placement:</strong> Other VMs are placed according to their risk and function profiles across the segmented network.</p>
+    <p><strong>Security Benefit:</strong> This design limits lateral movement. Even if the DMZ is breached, the minimal IP space and strict firewall controls provide time to detect and respond using previous snapshots.</p>
+    <p>This integration ensures the Proxmox environment adheres to the same Zero Trust principles as the rest of the infrastructure.</p>
+
+    <div class="image-container">
+        <img src="/images/proxmox-server/Reverse Proxy.jpg" alt="Proxmox Network Integration">
+        <p class="image-caption"></p>
+    </div>
+
+    <h2>Security &amp; Hardening</h2>
+    <p>Security follows defense-in-depth principles aligned with Zero Trust tenets.</p>
+    <p><strong>SSH Hardening:</strong> Root SSH login disabled across all systems with key-based authentication and high-entropy passphrases enforced. Helps prevent local machines from becoming an attack surface. Passphrases are stored non-local, offline.</p>
+    <p><strong>Docker Outbound Protection:</strong> All Docker stacks route through Gluetun for outbound traffic encryption. DoT enabled.</p>
+    <p><strong>WAF (Cloudflare):</strong> Placed in front of all applications as a compensating control; helps with rate limiting, DOS attacks, and restricts common exploit paths. Also proxies my public IP address.</p>
+    <p><strong>Network Controls:</strong> VLAN segmentation, MAC port security, BPDU Guard, and strict OPNsense firewall rules provide the primary protection boundary.</p>
+    <p><strong>Recovery Capability:</strong> Infrastructure snapshots enable quick recovery from potential compromise. I will convert to a high availability structure as soon as I can.</p>
+    <p><strong>Future Enhancements:</strong> Planned additions include a RADIUS server for enhanced authentication and Proxmox-level firewall rules as an additional defense layer.</p>
+    <p>This layered approach significantly reduces the attack surface and supports rapid recovery if needed.</p>
+
+    <h2>Challenges &amp; Lessons Learned</h2>
+    <p>Consolidation introduced several operational and technical challenges that strengthened overall practices:</p>
+    <p><strong>LXC vs VM Compatibility:</strong> Mixing LXC containers with VMs led to persistent network and configuration issues. LXCs also presented Docker nesting quirks and lower security assurances, leading to a VM-centric standardization.</p>
+    <p><strong>Gluetun Docker Race Condition:</strong> Post-consolidation, timing issues arose when starting Gluetun alongside dependent containers. Explicit startup ordering (Gluetun first) was implemented to mitigate the issue, however - completely manual.</p>
+    <p><strong>ZFS Single-Disk Trade-offs:</strong> Self-healing and checksums provide strong integrity, but the lack of redundancy increases dependence on regular backups and snapshots.</p>
+    <p><strong>Performance Tuning After Consolidation:</strong> Resource allocation (CPU and RAM shares) required measurement and adjustment to optimize denser VM workloads. Originally, I had issued extra CPU, RAM, and storage - but I was wasting resources. Online specs don't necessarily translate to direct allocations.</p>
+    <p><strong>Dependency Mapping:</strong> NFS mounts and service startup order across reboots and network events demanded careful planning and testing.</p>
+    <p><strong>Physical Security:</strong> The stack continues to operate without a fully locked rack or enclosure.</p>
+    <p><strong>Backup Window Management:</strong> Weekly full backups of the 8TB pool are time-intensive, requiring scheduling trade-offs.</p>
+    <p><strong>Documentation Overhead:</strong> Maintaining accurate VLAN mappings, service dependencies, and network diagrams remains an ongoing effort as the environment evolves.</p>
+
+    <h2>Future Plans</h2>
+    <ul>
+        <li>Implement Proxmox firewall rules as an additional security layer.</li>
+        <li>Deploy a RADIUS server for centralized authentication.</li>
+        <li>Build a dedicated AI/GPU node to offload compute-intensive workloads.</li>
+        <li>Expand monitoring with SIEM or centralized logging capabilities.</li>
+        <li>Investigate long-term storage improvements, including potential multi-drive ZFS arrays or a dedicated NAS.</li>
+    </ul>
+    <p>The homelab remains a continuous evolution. Through consolidation, improved storage practices, and deeper integration with Zero Trust networking, the environment now provides greater efficiency, security, and resilience. Each challenge encountered has contributed to stronger technical foundations and operational maturity.</p>
+
+
+
+    <!---------------------- end blog content --------------------------------------------->
+
+    <!-- Recent Posts -->
+    <section class="recent-posts">
+        <h2 class="section-title">Recent Posts</h2>
+        <div class="recent-grid" id="recent-grid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        AsciinemaPlayer.create('/assets/borgbackup.cast', document.getElementById('cast1'), {
+            cols: 120,
+            rows: 30,
+            theme: 'tango',
+            controls: "auto",
+            autoPlay: true,
+            loop: true,
+            speed: 2,
+            preload: true
+        }); // add more by copying this
+    });
+</script>
+
+
+<script src="/script.js" defer></script>
+</body>
+</html>
